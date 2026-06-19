@@ -159,7 +159,7 @@ function Hero() {
             <a href="#signature" className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Explore the menu →</a>
           </div>
           <dl className="mt-14 grid grid-cols-3 gap-4 max-w-lg">
-            {[["4.0★", "Google rated"], ["11:30–23", "Open daily"], ["12+", "Live music nights"]].map(([k, v]) => (
+            {[["4.0★", "889 Google reviews"], ["৳400–600", "Per person"], ["11:30–23", "Open daily"]].map(([k, v]) => (
               <div key={k} className="glass rounded-2xl p-4">
                 <dt className="font-display text-2xl text-gradient-gold">{k}</dt>
                 <dd className="mt-1 text-xs text-muted-foreground">{v}</dd>
