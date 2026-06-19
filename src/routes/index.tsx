@@ -4,6 +4,14 @@ import heroImg from "@/assets/hero.jpg";
 import dish1 from "@/assets/dish-1.jpg";
 import dish2 from "@/assets/dish-2.jpg";
 import dish3 from "@/assets/dish-3.jpg";
+import aboutImg from "@/assets/about.jpg";
+import menuPeri from "@/assets/menu-peri.jpg";
+import menuPizza from "@/assets/menu-pizza.jpg";
+import menuNachos from "@/assets/menu-nachos.jpg";
+import menuCashew from "@/assets/menu-cashew.jpg";
+import gallery1 from "@/assets/gallery-1.jpg";
+import gallery2 from "@/assets/gallery-2.jpg";
+import gallery3 from "@/assets/gallery-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,9 +40,22 @@ export const Route = createFileRoute("/")({
           },
           telephone: "+880 1869-341634",
           servesCuisine: ["Continental", "Bangladeshi", "Fusion"],
-          priceRange: "$$",
           openingHours: "Mo-Su 11:30-23:00",
-          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.0", reviewCount: "120" },
+          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.0", reviewCount: "889" },
+          priceRange: "৳400–600",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "Do I need to reserve a table?", acceptedAnswer: { "@type": "Answer", text: "Walk-ins are welcome, but reservations are strongly recommended for evenings and weekends — especially live music nights." } },
+            { "@type": "Question", name: "What are your opening hours?", acceptedAnswer: { "@type": "Answer", text: "Open daily from 11:30 AM to 11:00 PM." } },
+            { "@type": "Question", name: "How much should I expect to spend?", acceptedAnswer: { "@type": "Answer", text: "Around ৳400–600 per person for a full meal." } },
+            { "@type": "Question", name: "Do you offer delivery and drive-through?", acceptedAnswer: { "@type": "Answer", text: "Drive-through during opening hours and no-contact delivery via foodpanda." } },
+          ],
         }),
       },
     ],
@@ -48,8 +69,12 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
+      <About />
+      <FeaturedMenu />
       <Services />
       <Signature />
+      <Gallery />
+      <ReservationCTA />
       <Testimonials />
       <FAQ />
       <MapSection />
@@ -74,8 +99,10 @@ function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const links = [
+    ["About", "#about"],
+    ["Menu", "#menu"],
     ["Experience", "#services"],
-    ["Signature", "#signature"],
+    ["Gallery", "#gallery"],
     ["Reviews", "#reviews"],
     ["FAQ", "#faq"],
     ["Visit", "#visit"],
@@ -145,7 +172,7 @@ function Hero() {
             <a href="#signature" className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Explore the menu →</a>
           </div>
           <dl className="mt-14 grid grid-cols-3 gap-4 max-w-lg">
-            {[["4.0★", "Google rated"], ["11:30–23", "Open daily"], ["12+", "Live music nights"]].map(([k, v]) => (
+            {[["4.0★", "889 Google reviews"], ["৳400–600", "Per person"], ["11:30–23", "Open daily"]].map(([k, v]) => (
               <div key={k} className="glass rounded-2xl p-4">
                 <dt className="font-display text-2xl text-gradient-gold">{k}</dt>
                 <dd className="mt-1 text-xs text-muted-foreground">{v}</dd>
@@ -178,12 +205,150 @@ function Marquee() {
   );
 }
 
+function About() {
+  return (
+    <section id="about" className="relative py-28 sm:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+        <div className="relative animate-float-slow">
+          <div className="absolute -inset-6 rounded-[2rem] bg-[var(--gradient-gold)] opacity-20 blur-3xl"></div>
+          <div className="relative overflow-hidden rounded-[2rem] border border-border/60">
+            <img src={aboutImg} alt="HashTag Restaurant interior — velvet booths, brick wall and live music stage" loading="lazy" width={1600} height={1280}
+              className="h-full w-full object-cover" />
+          </div>
+          <div className="hidden md:block absolute -bottom-8 -right-8 glass rounded-2xl p-5 w-56 shadow-[var(--shadow-luxury)]">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Since</div>
+            <div className="mt-1 font-display text-4xl text-gradient-gold">2018</div>
+            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">A neighbourhood favourite, evening after evening.</p>
+          </div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-[0.4em] text-gradient-gold">About HashTag</div>
+          <h2 className="mt-4 font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
+            A restaurant, music cafe & lounge — <span className="text-gradient-gold italic">all at once.</span>
+          </h2>
+          <p className="mt-6 text-muted-foreground leading-relaxed">
+            Tucked inside the CDA Masjid Complex in Mehedibag, HashTag has spent years turning ordinary evenings into something worth posting about. Continental plates from a chef's-table kitchen, slow-poured cocktails behind a backlit bar, and live acoustic sets that close out the night.
+          </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Families, couples, friends and visitors to Chattogram — there's a corner here for every occasion.
+          </p>
+          <ul className="mt-8 grid grid-cols-2 gap-3 text-sm">
+            {["Continental & fusion kitchen", "Live acoustic nights", "Smoked craft cocktails", "Private group bookings", "Dine-in & drive-through", "Delivery via foodpanda"].map((f) => (
+              <li key={f} className="flex items-start gap-2 glass-soft rounded-xl px-4 py-3">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]"></span>
+                <span className="text-foreground/85">{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedMenu() {
+  const items = [
+    { img: menuPeri, name: "Peri Peri Chicken Meal", desc: "Fire-grilled chicken, peri spice, crispy rice and dipping aioli.", price: "৳ 520", tag: "Popular" },
+    { img: menuPizza, name: "Four Seasons Pizza", desc: "Hand-stretched, wood-fired, four toppings in one slice-fight.", price: "৳ 690", tag: "Popular" },
+    { img: menuNachos, name: "Turkish Nachos", desc: "Spiced ground meat, yogurt, herbs and warm pita crisps.", price: "৳ 380", tag: "Popular" },
+    { img: menuCashew, name: "Chicken Cashew Nut Salad", desc: "Tender chicken, toasted cashews, fresh greens, citrus dressing.", price: "৳ 420", tag: "Guest favourite" },
+    { img: dish1, name: "Chef Special Steak", desc: "Hand-cut, char-grilled steak with seasonal vegetables.", price: "৳ 750", tag: "Signature" },
+    { img: dish2, name: "Smoked Old Fashioned", desc: "Aged spirits, bitters, orange peel — finished tableside in smoke.", price: "৳ 650", tag: "Bar" },
+  ];
+  return (
+    <section id="menu" className="relative py-28 sm:py-36">
+      <SectionHeader eyebrow="Featured Menu" title={<>The plates regulars <span className="text-gradient-gold italic">order on repeat.</span></>} sub="A short list of bestsellers — ask your server for the full menu and chef's specials of the night." />
+      <div className="mx-auto mt-16 max-w-7xl px-5 sm:px-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((it) => (
+          <article key={it.name} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col">
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <img src={it.img} alt={it.name} loading="lazy" width={1024} height={768}
+                className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              <div className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.25em] glass-soft rounded-full px-3 py-1">{it.tag}</div>
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent"></div>
+            </div>
+            <div className="p-6 flex-1 flex flex-col">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="font-display text-xl leading-tight">{it.name}</h3>
+                <span className="text-gradient-gold font-display text-lg shrink-0">{it.price}</span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{it.desc}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="mx-auto mt-12 max-w-7xl px-5 sm:px-8 flex flex-wrap justify-center gap-3">
+        <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve to taste them all</a>
+        <a href="https://www.foodpanda.com.bd/" target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Order on foodpanda →</a>
+      </div>
+    </section>
+  );
+}
+
+function Gallery() {
+  const shots = [
+    { src: gallery1, alt: "Couple having a romantic candle-lit dinner at HashTag", span: "md:col-span-2 md:row-span-2 aspect-square md:aspect-auto" },
+    { src: dish2, alt: "Smoked signature cocktail at the bar", span: "aspect-[4/5]" },
+    { src: gallery2, alt: "Bartender pouring a craft cocktail behind the bar", span: "aspect-[4/5]" },
+    { src: dish3, alt: "Live acoustic guitarist on the cafe stage", span: "md:col-span-2 aspect-[16/9] md:aspect-[16/8]" },
+    { src: gallery3, alt: "Chef plating a fine-dining dish in the kitchen", span: "aspect-[4/5]" },
+    { src: aboutImg, alt: "Velvet booths and warm pendant lights inside HashTag", span: "aspect-[4/5]" },
+  ];
+  return (
+    <section id="gallery" className="relative py-28 sm:py-36">
+      <SectionHeader eyebrow="Gallery" title={<>An evening, in <span className="text-gradient-gold italic">moments.</span></>} sub="A glimpse of the room, the bar and the kitchen behind the plates." />
+      <div className="mx-auto mt-16 max-w-7xl px-5 sm:px-8">
+        <div className="grid gap-4 md:grid-cols-4 md:auto-rows-[200px]">
+          {shots.map((s, i) => (
+            <figure key={i} className={`group relative overflow-hidden rounded-3xl border border-border/60 hover-lift ${s.span}`}>
+              <img src={s.src} alt={s.alt} loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ReservationCTA() {
+  return (
+    <section className="relative py-28 sm:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="relative overflow-hidden rounded-[2.5rem] glass p-10 sm:p-16 md:p-20">
+          <div className="absolute inset-0 -z-10 opacity-40" style={{ background: "var(--gradient-radial-spot)" }}></div>
+          <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-[var(--gold)] opacity-10 blur-3xl animate-float-slow"></div>
+          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-[var(--ember)] opacity-10 blur-3xl"></div>
+
+          <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.4em] text-gradient-gold">Reserve tonight</div>
+              <h2 className="mt-4 font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
+                The best seat in <span className="text-gradient-gold italic">Mehedibag,</span><br className="hidden sm:block" /> is the one you reserve.
+              </h2>
+              <p className="mt-6 text-muted-foreground max-w-xl leading-relaxed">
+                Walk-ins are welcome, but weekends — especially live music nights — fill up fast. Two taps to lock your table.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-center text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Book a table</a>
+              <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Chat on WhatsApp</a>
+              <a href={`tel:${PHONE}`} className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Call {PHONE}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Services() {
   const services = [
     { t: "Fine Dining", d: "A seasonal menu of slow-cooked classics and chef's signatures, plated to feel like an occasion every visit.", k: "01" },
     { t: "Music Cafe", d: "Acoustic sets, soulful covers and original artists — a stage built for intimate, unforgettable evenings.", k: "02" },
     { t: "Lounge & Cocktails", d: "Velvet seating, smoked cocktails and a long pour. The kind of late hour you don't want to end.", k: "03" },
-    { t: "Private Events", d: "Birthdays, anniversaries, brand dinners — we host them like our own with a dedicated planner.", k: "04" },
+    { t: "Dine-in · Drive-through · Delivery", d: "Take the seat, the wheel, or order in via foodpanda. Same kitchen, same standard, your choice of room.", k: "04" },
   ];
   return (
     <section id="services" className="relative py-28 sm:py-36">
@@ -240,9 +405,9 @@ function Signature() {
 
 function Testimonials() {
   const items = [
-    { q: "The plating, the playlist, the lighting — every detail felt thought through. Easily my favourite spot in Chattogram.", n: "Nuzhat A.", r: "Anniversary dinner" },
-    { q: "Smoked old fashioned was elite. Stayed for the acoustic set and lost track of time.", n: "Ridwan H.", r: "Friday night" },
-    { q: "We hosted a private birthday upstairs — staff handled everything. Guests are still talking about it.", n: "Tasnia K.", r: "Private event" },
+    { q: "Food is generally good. Good ambience. Furniture have been improved recently. Staff are friendly and helpful. Pretty good hygiene standard maintained in the dining area.", n: "Tridib Ghose", r: "Local Guide · 198 reviews", s: 5 },
+    { q: "The food quality is very good and all items are found delicious. However the sitting space is a bit small — get there early on weekends.", n: "Rakin Rafsan", r: "Local Guide · 67 reviews", s: 5 },
+    { q: "Environment was cozy and they allow live music for their customers. A very good place to hangout with friends and have some great, tasty food. Chicken cashew nut salad was a favourite.", n: "Mashruba Hani", r: "Local Guide · 60 reviews", s: 4 },
   ];
   return (
     <section id="reviews" className="relative py-28 sm:py-36">
@@ -258,10 +423,13 @@ function Testimonials() {
                 <div className="text-sm font-medium">{t.n}</div>
                 <div className="text-xs text-muted-foreground">{t.r}</div>
               </div>
-              <div className="ml-auto text-[var(--gold)] text-sm">★★★★★</div>
+              <div className="ml-auto text-[var(--gold)] text-sm">{"★".repeat(t.s)}{"☆".repeat(5 - t.s)}</div>
             </figcaption>
           </figure>
         ))}
+      </div>
+      <div className="mt-12 text-center text-sm text-muted-foreground">
+        Rated <span className="text-gradient-gold font-display text-lg align-middle">4.0 ★</span> from <span className="text-foreground">889 Google reviews</span>
       </div>
     </section>
   );
@@ -271,7 +439,9 @@ function FAQ() {
   const faqs = [
     { q: "Do I need to reserve a table?", a: "Walk-ins are welcome, but reservations are strongly recommended for evenings and weekends — especially live music nights." },
     { q: "What are your opening hours?", a: "We're open every day from 11:30 AM to 11:00 PM, with the lounge active until close." },
+    { q: "How much should I expect to spend?", a: "Most guests spend around ৳400–600 per person for a full meal. Drinks, signature dishes and platters are priced separately." },
     { q: "Is there live music every night?", a: "Acoustic and live sets are scheduled Thursday through Saturday. Follow our socials for the weekly lineup." },
+    { q: "Do you offer delivery and drive-through?", a: "Yes — drive-through is available during opening hours, and no-contact delivery is supported via foodpanda." },
     { q: "Do you host private events?", a: "Yes — birthdays, anniversaries, corporate dinners and brand events. A dedicated planner will reach out within a day." },
     { q: "Is parking available?", a: "On-site and street parking are both available near the CDA Masjid Complex in Mehedibag." },
   ];
