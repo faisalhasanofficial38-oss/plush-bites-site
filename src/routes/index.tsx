@@ -40,7 +40,6 @@ export const Route = createFileRoute("/")({
           },
           telephone: "+880 1869-341634",
           servesCuisine: ["Continental", "Bangladeshi", "Fusion"],
-          priceRange: "$$",
           openingHours: "Mo-Su 11:30-23:00",
           aggregateRating: { "@type": "AggregateRating", ratingValue: "4.0", reviewCount: "889" },
           priceRange: "৳400–600",
