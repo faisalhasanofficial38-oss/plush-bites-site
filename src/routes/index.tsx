@@ -192,6 +192,144 @@ function Marquee() {
   );
 }
 
+function About() {
+  return (
+    <section id="about" className="relative py-28 sm:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+        <div className="relative animate-float-slow">
+          <div className="absolute -inset-6 rounded-[2rem] bg-[var(--gradient-gold)] opacity-20 blur-3xl"></div>
+          <div className="relative overflow-hidden rounded-[2rem] border border-border/60">
+            <img src={aboutImg} alt="HashTag Restaurant interior — velvet booths, brick wall and live music stage" loading="lazy" width={1600} height={1280}
+              className="h-full w-full object-cover" />
+          </div>
+          <div className="hidden md:block absolute -bottom-8 -right-8 glass rounded-2xl p-5 w-56 shadow-[var(--shadow-luxury)]">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Since</div>
+            <div className="mt-1 font-display text-4xl text-gradient-gold">2018</div>
+            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">A neighbourhood favourite, evening after evening.</p>
+          </div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-[0.4em] text-gradient-gold">About HashTag</div>
+          <h2 className="mt-4 font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
+            A restaurant, music cafe & lounge — <span className="text-gradient-gold italic">all at once.</span>
+          </h2>
+          <p className="mt-6 text-muted-foreground leading-relaxed">
+            Tucked inside the CDA Masjid Complex in Mehedibag, HashTag has spent years turning ordinary evenings into something worth posting about. Continental plates from a chef's-table kitchen, slow-poured cocktails behind a backlit bar, and live acoustic sets that close out the night.
+          </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Families, couples, friends and visitors to Chattogram — there's a corner here for every occasion.
+          </p>
+          <ul className="mt-8 grid grid-cols-2 gap-3 text-sm">
+            {["Continental & fusion kitchen", "Live acoustic nights", "Smoked craft cocktails", "Private group bookings", "Dine-in & drive-through", "Delivery via foodpanda"].map((f) => (
+              <li key={f} className="flex items-start gap-2 glass-soft rounded-xl px-4 py-3">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]"></span>
+                <span className="text-foreground/85">{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedMenu() {
+  const items = [
+    { img: menuPeri, name: "Peri Peri Chicken Meal", desc: "Fire-grilled chicken, peri spice, crispy rice and dipping aioli.", price: "৳ 520", tag: "Popular" },
+    { img: menuPizza, name: "Four Seasons Pizza", desc: "Hand-stretched, wood-fired, four toppings in one slice-fight.", price: "৳ 690", tag: "Popular" },
+    { img: menuNachos, name: "Turkish Nachos", desc: "Spiced ground meat, yogurt, herbs and warm pita crisps.", price: "৳ 380", tag: "Popular" },
+    { img: menuCashew, name: "Chicken Cashew Nut Salad", desc: "Tender chicken, toasted cashews, fresh greens, citrus dressing.", price: "৳ 420", tag: "Guest favourite" },
+    { img: dish1, name: "Chef Special Steak", desc: "Hand-cut, char-grilled steak with seasonal vegetables.", price: "৳ 750", tag: "Signature" },
+    { img: dish2, name: "Smoked Old Fashioned", desc: "Aged spirits, bitters, orange peel — finished tableside in smoke.", price: "৳ 650", tag: "Bar" },
+  ];
+  return (
+    <section id="menu" className="relative py-28 sm:py-36">
+      <SectionHeader eyebrow="Featured Menu" title={<>The plates regulars <span className="text-gradient-gold italic">order on repeat.</span></>} sub="A short list of bestsellers — ask your server for the full menu and chef's specials of the night." />
+      <div className="mx-auto mt-16 max-w-7xl px-5 sm:px-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((it) => (
+          <article key={it.name} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col">
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <img src={it.img} alt={it.name} loading="lazy" width={1024} height={768}
+                className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              <div className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.25em] glass-soft rounded-full px-3 py-1">{it.tag}</div>
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent"></div>
+            </div>
+            <div className="p-6 flex-1 flex flex-col">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="font-display text-xl leading-tight">{it.name}</h3>
+                <span className="text-gradient-gold font-display text-lg shrink-0">{it.price}</span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{it.desc}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="mx-auto mt-12 max-w-7xl px-5 sm:px-8 flex flex-wrap justify-center gap-3">
+        <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve to taste them all</a>
+        <a href="https://www.foodpanda.com.bd/" target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Order on foodpanda →</a>
+      </div>
+    </section>
+  );
+}
+
+function Gallery() {
+  const shots = [
+    { src: gallery1, alt: "Couple having a romantic candle-lit dinner at HashTag", span: "md:col-span-2 md:row-span-2 aspect-square md:aspect-auto" },
+    { src: dish2, alt: "Smoked signature cocktail at the bar", span: "aspect-[4/5]" },
+    { src: gallery2, alt: "Bartender pouring a craft cocktail behind the bar", span: "aspect-[4/5]" },
+    { src: dish3, alt: "Live acoustic guitarist on the cafe stage", span: "md:col-span-2 aspect-[16/9] md:aspect-[16/8]" },
+    { src: gallery3, alt: "Chef plating a fine-dining dish in the kitchen", span: "aspect-[4/5]" },
+    { src: aboutImg, alt: "Velvet booths and warm pendant lights inside HashTag", span: "aspect-[4/5]" },
+  ];
+  return (
+    <section id="gallery" className="relative py-28 sm:py-36">
+      <SectionHeader eyebrow="Gallery" title={<>An evening, in <span className="text-gradient-gold italic">moments.</span></>} sub="A glimpse of the room, the bar and the kitchen behind the plates." />
+      <div className="mx-auto mt-16 max-w-7xl px-5 sm:px-8">
+        <div className="grid gap-4 md:grid-cols-4 md:auto-rows-[200px]">
+          {shots.map((s, i) => (
+            <figure key={i} className={`group relative overflow-hidden rounded-3xl border border-border/60 hover-lift ${s.span}`}>
+              <img src={s.src} alt={s.alt} loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ReservationCTA() {
+  return (
+    <section className="relative py-28 sm:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="relative overflow-hidden rounded-[2.5rem] glass p-10 sm:p-16 md:p-20">
+          <div className="absolute inset-0 -z-10 opacity-40" style={{ background: "var(--gradient-radial-spot)" }}></div>
+          <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-[var(--gold)] opacity-10 blur-3xl animate-float-slow"></div>
+          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-[var(--ember)] opacity-10 blur-3xl"></div>
+
+          <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.4em] text-gradient-gold">Reserve tonight</div>
+              <h2 className="mt-4 font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
+                The best seat in <span className="text-gradient-gold italic">Mehedibag,</span><br className="hidden sm:block" /> is the one you reserve.
+              </h2>
+              <p className="mt-6 text-muted-foreground max-w-xl leading-relaxed">
+                Walk-ins are welcome, but weekends — especially live music nights — fill up fast. Two taps to lock your table.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-center text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Book a table</a>
+              <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Chat on WhatsApp</a>
+              <a href={`tel:${PHONE}`} className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Call {PHONE}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Services() {
   const services = [
     { t: "Fine Dining", d: "A seasonal menu of slow-cooked classics and chef's signatures, plated to feel like an occasion every visit.", k: "01" },
