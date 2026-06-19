@@ -86,8 +86,10 @@ function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const links = [
+    ["About", "#about"],
+    ["Menu", "#menu"],
     ["Experience", "#services"],
-    ["Signature", "#signature"],
+    ["Gallery", "#gallery"],
     ["Reviews", "#reviews"],
     ["FAQ", "#faq"],
     ["Visit", "#visit"],
