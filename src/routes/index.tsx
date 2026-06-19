@@ -4,6 +4,14 @@ import heroImg from "@/assets/hero.jpg";
 import dish1 from "@/assets/dish-1.jpg";
 import dish2 from "@/assets/dish-2.jpg";
 import dish3 from "@/assets/dish-3.jpg";
+import aboutImg from "@/assets/about.jpg";
+import menuPeri from "@/assets/menu-peri.jpg";
+import menuPizza from "@/assets/menu-pizza.jpg";
+import menuNachos from "@/assets/menu-nachos.jpg";
+import menuCashew from "@/assets/menu-cashew.jpg";
+import gallery1 from "@/assets/gallery-1.jpg";
+import gallery2 from "@/assets/gallery-2.jpg";
+import gallery3 from "@/assets/gallery-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,7 +42,8 @@ export const Route = createFileRoute("/")({
           servesCuisine: ["Continental", "Bangladeshi", "Fusion"],
           priceRange: "$$",
           openingHours: "Mo-Su 11:30-23:00",
-          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.0", reviewCount: "120" },
+          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.0", reviewCount: "889" },
+          priceRange: "৳400–600",
         }),
       },
     ],
@@ -48,8 +57,12 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
+      <About />
+      <FeaturedMenu />
       <Services />
       <Signature />
+      <Gallery />
+      <ReservationCTA />
       <Testimonials />
       <FAQ />
       <MapSection />
