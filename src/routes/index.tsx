@@ -197,7 +197,7 @@ function Services() {
     { t: "Fine Dining", d: "A seasonal menu of slow-cooked classics and chef's signatures, plated to feel like an occasion every visit.", k: "01" },
     { t: "Music Cafe", d: "Acoustic sets, soulful covers and original artists — a stage built for intimate, unforgettable evenings.", k: "02" },
     { t: "Lounge & Cocktails", d: "Velvet seating, smoked cocktails and a long pour. The kind of late hour you don't want to end.", k: "03" },
-    { t: "Private Events", d: "Birthdays, anniversaries, brand dinners — we host them like our own with a dedicated planner.", k: "04" },
+    { t: "Dine-in · Drive-through · Delivery", d: "Take the seat, the wheel, or order in via foodpanda. Same kitchen, same standard, your choice of room.", k: "04" },
   ];
   return (
     <section id="services" className="relative py-28 sm:py-36">
