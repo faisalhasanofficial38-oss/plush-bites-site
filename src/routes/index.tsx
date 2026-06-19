@@ -45,6 +45,19 @@ export const Route = createFileRoute("/")({
           priceRange: "৳400–600",
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "Do I need to reserve a table?", acceptedAnswer: { "@type": "Answer", text: "Walk-ins are welcome, but reservations are strongly recommended for evenings and weekends — especially live music nights." } },
+            { "@type": "Question", name: "What are your opening hours?", acceptedAnswer: { "@type": "Answer", text: "Open daily from 11:30 AM to 11:00 PM." } },
+            { "@type": "Question", name: "How much should I expect to spend?", acceptedAnswer: { "@type": "Answer", text: "Around ৳400–600 per person for a full meal." } },
+            { "@type": "Question", name: "Do you offer delivery and drive-through?", acceptedAnswer: { "@type": "Answer", text: "Drive-through during opening hours and no-contact delivery via foodpanda." } },
+          ],
+        }),
+      },
     ],
   }),
   component: Index,
