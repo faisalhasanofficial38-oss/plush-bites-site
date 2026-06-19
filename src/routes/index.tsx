@@ -392,9 +392,9 @@ function Signature() {
 
 function Testimonials() {
   const items = [
-    { q: "The plating, the playlist, the lighting — every detail felt thought through. Easily my favourite spot in Chattogram.", n: "Nuzhat A.", r: "Anniversary dinner" },
-    { q: "Smoked old fashioned was elite. Stayed for the acoustic set and lost track of time.", n: "Ridwan H.", r: "Friday night" },
-    { q: "We hosted a private birthday upstairs — staff handled everything. Guests are still talking about it.", n: "Tasnia K.", r: "Private event" },
+    { q: "Food is generally good. Good ambience. Furniture have been improved recently. Staff are friendly and helpful. Pretty good hygiene standard maintained in the dining area.", n: "Tridib Ghose", r: "Local Guide · 198 reviews", s: 5 },
+    { q: "The food quality is very good and all items are found delicious. However the sitting space is a bit small — get there early on weekends.", n: "Rakin Rafsan", r: "Local Guide · 67 reviews", s: 5 },
+    { q: "Environment was cozy and they allow live music for their customers. A very good place to hangout with friends and have some great, tasty food. Chicken cashew nut salad was a favourite.", n: "Mashruba Hani", r: "Local Guide · 60 reviews", s: 4 },
   ];
   return (
     <section id="reviews" className="relative py-28 sm:py-36">
@@ -410,10 +410,13 @@ function Testimonials() {
                 <div className="text-sm font-medium">{t.n}</div>
                 <div className="text-xs text-muted-foreground">{t.r}</div>
               </div>
-              <div className="ml-auto text-[var(--gold)] text-sm">★★★★★</div>
+              <div className="ml-auto text-[var(--gold)] text-sm">{"★".repeat(t.s)}{"☆".repeat(5 - t.s)}</div>
             </figcaption>
           </figure>
         ))}
+      </div>
+      <div className="mt-12 text-center text-sm text-muted-foreground">
+        Rated <span className="text-gradient-gold font-display text-lg align-middle">4.0 ★</span> from <span className="text-foreground">889 Google reviews</span>
       </div>
     </section>
   );
@@ -423,7 +426,9 @@ function FAQ() {
   const faqs = [
     { q: "Do I need to reserve a table?", a: "Walk-ins are welcome, but reservations are strongly recommended for evenings and weekends — especially live music nights." },
     { q: "What are your opening hours?", a: "We're open every day from 11:30 AM to 11:00 PM, with the lounge active until close." },
+    { q: "How much should I expect to spend?", a: "Most guests spend around ৳400–600 per person for a full meal. Drinks, signature dishes and platters are priced separately." },
     { q: "Is there live music every night?", a: "Acoustic and live sets are scheduled Thursday through Saturday. Follow our socials for the weekly lineup." },
+    { q: "Do you offer delivery and drive-through?", a: "Yes — drive-through is available during opening hours, and no-contact delivery is supported via foodpanda." },
     { q: "Do you host private events?", a: "Yes — birthdays, anniversaries, corporate dinners and brand events. A dedicated planner will reach out within a day." },
     { q: "Is parking available?", a: "On-site and street parking are both available near the CDA Masjid Complex in Mehedibag." },
   ];
