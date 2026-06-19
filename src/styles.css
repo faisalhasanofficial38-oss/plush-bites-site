@@ -62,26 +62,38 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --radius: 1rem;
+  /* Luxury dark theme — HashTag Restaurant */
+  --background: oklch(0.13 0.012 60);
+  --foreground: oklch(0.96 0.015 80);
+  --card: oklch(0.17 0.014 60);
+  --card-foreground: oklch(0.96 0.015 80);
+  --popover: oklch(0.15 0.014 60);
+  --popover-foreground: oklch(0.96 0.015 80);
+  --primary: oklch(0.78 0.14 75);
+  --primary-foreground: oklch(0.13 0.012 60);
+  --secondary: oklch(0.22 0.018 60);
+  --secondary-foreground: oklch(0.96 0.015 80);
+  --muted: oklch(0.2 0.012 60);
+  --muted-foreground: oklch(0.7 0.02 80);
+  --accent: oklch(0.65 0.18 35);
+  --accent-foreground: oklch(0.13 0.012 60);
+  --destructive: oklch(0.62 0.22 27);
+  --destructive-foreground: oklch(0.98 0.003 80);
+  --border: oklch(0.3 0.02 75 / 35%);
+  --input: oklch(0.25 0.018 70 / 60%);
+  --ring: oklch(0.78 0.14 75);
+  --gold: oklch(0.82 0.15 78);
+  --gold-soft: oklch(0.72 0.12 70);
+  --ember: oklch(0.6 0.2 32);
+  --gradient-gold: linear-gradient(135deg, oklch(0.82 0.15 78), oklch(0.6 0.18 50));
+  --gradient-radial-spot: radial-gradient(60% 60% at 50% 0%, oklch(0.78 0.14 75 / 18%), transparent 70%);
+  --glass-bg: oklch(0.2 0.015 65 / 35%);
+  --glass-border: oklch(0.95 0.05 85 / 12%);
+  --shadow-luxury: 0 30px 80px -20px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(0.95 0.05 85 / 0.06);
+  --shadow-gold: 0 20px 60px -15px oklch(0.78 0.14 75 / 0.35);
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +152,72 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(60% 50% at 50% -10%, oklch(0.78 0.14 75 / 0.12), transparent 60%),
+      radial-gradient(40% 40% at 90% 110%, oklch(0.6 0.2 32 / 0.1), transparent 60%);
+    background-attachment: fixed;
   }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --color-gold: var(--gold);
+  --color-ember: var(--ember);
+}
+
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-luxury);
+}
+
+@utility glass-soft {
+  background: oklch(0.2 0.015 65 / 25%);
+  backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid oklch(0.95 0.05 85 / 0.08);
+}
+
+@utility text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility hover-lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-gold);
+    border-color: oklch(0.78 0.14 75 / 0.5);
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@utility animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
 }
