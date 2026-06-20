@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { getPublicSnapshot, type MenuItem, type SiteSettings } from "@/lib/restaurant.functions";
 import heroImg from "@/assets/hero.jpg";
 import dish1 from "@/assets/dish-1.jpg";
 import dish2 from "@/assets/dish-2.jpg";
@@ -13,7 +15,17 @@ import gallery1 from "@/assets/gallery-1.jpg";
 import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
 
+const snapshotQuery = queryOptions({
+  queryKey: ["public-snapshot"],
+  queryFn: () => getPublicSnapshot(),
+  staleTime: 60_000,
+});
+
+const FALLBACK_IMAGES = [menuPeri, menuPizza, menuNachos, menuCashew, dish1, dish2, dish3];
+const pickFallbackImage = (i: number) => FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(snapshotQuery),
   head: () => ({
     meta: [
       { title: "HashTag — Restaurant, Music Cafe & Lounge in Chattogram" },
@@ -64,32 +76,30 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { data } = useSuspenseQuery(snapshotQuery);
+  const { settings, items } = data;
   return (
     <div className="min-h-screen overflow-x-hidden text-foreground">
-      <Nav />
-      <Hero />
+      <Nav settings={settings} />
+      <Hero settings={settings} />
       <Marquee />
       <About />
-      <FeaturedMenu />
+      <FeaturedMenu items={items} settings={settings} />
       <Services />
       <Signature />
       <Gallery />
-      <ReservationCTA />
+      <ReservationCTA settings={settings} />
       <Testimonials />
       <FAQ />
-      <MapSection />
-      <Contact />
-      <Footer />
-      <WhatsAppFab />
+      <MapSection settings={settings} />
+      <Contact settings={settings} />
+      <Footer settings={settings} />
+      <WhatsAppFab settings={settings} />
     </div>
   );
 }
 
-const PHONE = "+8801869341634";
-const WHATSAPP = "8801869341634";
-const ADDRESS = "Plot No. 07, CDA Masjid Complex, Mehedibag, Chattogram 4000, Bangladesh";
-
-function Nav() {
+function Nav({ settings }: { settings: SiteSettings }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -113,7 +123,7 @@ function Nav() {
         <div className={`grid grid-cols-[minmax(0,1fr)_auto] sm:flex sm:items-center sm:justify-between gap-4 rounded-2xl px-5 py-3 transition-all ${scrolled ? "glass" : ""}`}>
           <a href="#top" className="flex min-w-0 items-center gap-2">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground shadow-[var(--shadow-gold)]">#</span>
-            <span className="font-display text-xl font-semibold tracking-tight">HashTag</span>
+            <span className="font-display text-xl font-semibold tracking-tight">{settings.restaurant_name}</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             {links.map(([l, h]) => (
@@ -121,7 +131,7 @@ function Nav() {
             ))}
           </nav>
           <div className="hidden sm:flex items-center gap-3">
-            <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve</a>
+            <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order on foodpanda</a>
           </div>
           <button onClick={() => setOpen(o => !o)} aria-label="Menu" className="md:hidden inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl glass-soft sm:ml-0">
             <span className="space-y-1.5">
@@ -137,7 +147,8 @@ function Nav() {
               {links.map(([l, h]) => (
                 <a key={l} href={h} onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground">{l}</a>
               ))}
-              <a href="#contact" onClick={() => setOpen(false)} className="mt-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-center text-sm font-medium text-primary-foreground">Reserve a Table</a>
+              <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" onClick={() => setOpen(false)} className="mt-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-center text-sm font-medium text-primary-foreground">Order on foodpanda</a>
+              <a href={`tel:${settings.phone}`} onClick={() => setOpen(false)} className="rounded-full glass-soft px-5 py-2.5 text-center text-sm font-medium">Call restaurant</a>
             </nav>
           </div>
         )}
@@ -146,7 +157,8 @@ function Nav() {
   );
 }
 
-function Hero() {
+function Hero({ settings }: { settings: SiteSettings }) {
+  const mapsHref = "https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9";
   return (
     <section id="top" className="relative min-h-[100svh] flex items-center pt-32 pb-20">
       <img src={heroImg} alt="Plated gourmet dish in candle-lit dining room" width={1920} height={1080}
@@ -158,18 +170,19 @@ function Hero() {
         <div className="max-w-3xl animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse"></span>
-            Mehedibag · Chattogram
+            {settings.hero_eyebrow}
           </div>
           <h1 className="mt-6 font-display text-5xl sm:text-7xl md:text-8xl font-semibold leading-[0.95]">
-            A taste worth <br />
-            <span className="text-gradient-gold italic">#hashtagging.</span>
+            {settings.hero_headline}
           </h1>
           <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
-            Restaurant, music cafe & lounge — where slow-cooked plates meet live acoustic nights and golden-hour cocktails. An evening you'll want to remember.
+            {settings.hero_description}
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve a Table</a>
-            <a href="#signature" className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Explore the menu →</a>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order on foodpanda</a>
+            <a href={`tel:${settings.phone}`} className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Call restaurant</a>
+            <a href={mapsHref} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Get directions</a>
+            <a href="#menu" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">View menu →</a>
           </div>
           <dl className="mt-14 grid grid-cols-3 gap-4 max-w-lg">
             {[["4.0★", "889 Google reviews"], ["৳400–600", "Per person"], ["11:30–23", "Open daily"]].map(([k, v]) => (
@@ -246,40 +259,37 @@ function About() {
   );
 }
 
-function FeaturedMenu() {
-  const items = [
-    { img: menuPeri, name: "Peri Peri Chicken Meal", desc: "Fire-grilled chicken, peri spice, crispy rice and dipping aioli.", price: "৳ 520", tag: "Popular" },
-    { img: menuPizza, name: "Four Seasons Pizza", desc: "Hand-stretched, wood-fired, four toppings in one slice-fight.", price: "৳ 690", tag: "Popular" },
-    { img: menuNachos, name: "Turkish Nachos", desc: "Spiced ground meat, yogurt, herbs and warm pita crisps.", price: "৳ 380", tag: "Popular" },
-    { img: menuCashew, name: "Chicken Cashew Nut Salad", desc: "Tender chicken, toasted cashews, fresh greens, citrus dressing.", price: "৳ 420", tag: "Guest favourite" },
-    { img: dish1, name: "Chef Special Steak", desc: "Hand-cut, char-grilled steak with seasonal vegetables.", price: "৳ 750", tag: "Signature" },
-    { img: dish2, name: "Smoked Old Fashioned", desc: "Aged spirits, bitters, orange peel — finished tableside in smoke.", price: "৳ 650", tag: "Bar" },
-  ];
+function FeaturedMenu({ items, settings }: { items: MenuItem[]; settings: SiteSettings }) {
+  const display = items.length > 0 ? items : [];
   return (
     <section id="menu" className="relative py-28 sm:py-36">
       <SectionHeader eyebrow="Featured Menu" title={<>The plates regulars <span className="text-gradient-gold italic">order on repeat.</span></>} sub="A short list of bestsellers — ask your server for the full menu and chef's specials of the night." />
       <div className="mx-auto mt-16 max-w-7xl px-5 sm:px-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it) => (
-          <article key={it.name} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col">
+        {display.map((it, i) => (
+          <article key={it.id} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col">
             <div className="relative aspect-[4/3] overflow-hidden">
-              <img src={it.img} alt={it.name} loading="lazy" width={1024} height={768}
+              <img src={it.image_url || pickFallbackImage(i)} alt={it.name} loading="lazy" width={1024} height={768}
                 className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
-              <div className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.25em] glass-soft rounded-full px-3 py-1">{it.tag}</div>
+              {(it.is_best_seller || it.is_featured) && (
+                <div className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.25em] glass-soft rounded-full px-3 py-1">
+                  {it.is_best_seller ? "Best seller" : "Featured"}
+                </div>
+              )}
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent"></div>
             </div>
             <div className="p-6 flex-1 flex flex-col">
               <div className="flex items-start justify-between gap-4">
                 <h3 className="font-display text-xl leading-tight">{it.name}</h3>
-                <span className="text-gradient-gold font-display text-lg shrink-0">{it.price}</span>
+                <span className="text-gradient-gold font-display text-lg shrink-0">{it.price_text}</span>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{it.desc}</p>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{it.description}</p>
             </div>
           </article>
         ))}
       </div>
       <div className="mx-auto mt-12 max-w-7xl px-5 sm:px-8 flex flex-wrap justify-center gap-3">
-        <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve to taste them all</a>
-        <a href="https://www.foodpanda.com.bd/" target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Order on foodpanda →</a>
+        <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order on foodpanda →</a>
+        <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Call to reserve</a>
       </div>
     </section>
   );
@@ -312,7 +322,7 @@ function Gallery() {
   );
 }
 
-function ReservationCTA() {
+function ReservationCTA({ settings }: { settings: SiteSettings }) {
   return (
     <section className="relative py-28 sm:py-36">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -332,9 +342,10 @@ function ReservationCTA() {
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-center text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Book a table</a>
-              <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Chat on WhatsApp</a>
-              <a href={`tel:${PHONE}`} className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Call {PHONE}</a>
+              <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-center text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Order on foodpanda</a>
+              <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Call {settings.phone}</a>
+              <a href="https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9" target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Get directions</a>
+              <a href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Hi HashTag, I have an inquiry.")}`} target="_blank" rel="noreferrer" className="text-center text-xs text-muted-foreground hover:text-foreground pt-1">General inquiry on WhatsApp →</a>
             </div>
           </div>
         </div>
@@ -471,7 +482,7 @@ function FAQ() {
   );
 }
 
-function MapSection() {
+function MapSection({ settings }: { settings: SiteSettings }) {
   return (
     <section id="visit" className="relative py-28 sm:py-36">
       <SectionHeader eyebrow="Visit" title={<>Find us in <span className="text-gradient-gold italic">Mehedibag.</span></>} sub="A short walk from the CDA Masjid Complex." />
@@ -480,24 +491,25 @@ function MapSection() {
           <div className="p-8 sm:p-10 space-y-6">
             <div>
               <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Address</div>
-              <p className="mt-2 font-display text-2xl leading-snug">{ADDRESS}</p>
+              <p className="mt-2 font-display text-2xl leading-snug">{settings.address}</p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <InfoBlock label="Hours" value="11:30 AM – 11 PM" />
-              <InfoBlock label="Phone" value={PHONE} href={`tel:${PHONE}`} />
+              <InfoBlock label="Hours" value={settings.opening_hours} />
+              <InfoBlock label="Phone" value={settings.phone} href={`tel:${settings.phone}`} />
               <InfoBlock label="Plus Code" value="9R4F+WX Chattogram" />
               <InfoBlock label="Rating" value="4.0 ★ on Google" />
             </div>
             <div className="flex flex-wrap gap-3 pt-2">
               <a href="https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9" target="_blank" rel="noreferrer"
                 className="rounded-full bg-[var(--gradient-gold)] px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Get directions</a>
-              <a href={`tel:${PHONE}`} className="rounded-full glass-soft px-6 py-3 text-sm font-medium hover-lift">Call us</a>
+              <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-6 py-3 text-sm font-medium hover-lift">Call us</a>
+              <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-6 py-3 text-sm font-medium hover-lift">Order on foodpanda</a>
             </div>
           </div>
           <div className="min-h-[360px] lg:min-h-[460px] relative">
             <iframe
               title="HashTag Restaurant location"
-              src="https://www.google.com/maps?q=HashTag+Restaurant+Mehedibag+Chattogram&output=embed"
+              src={settings.map_embed_url}
               className="absolute inset-0 h-full w-full grayscale-[40%] contrast-110"
               style={{ border: 0, filter: "invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.9)" }}
               loading="lazy"
@@ -525,18 +537,20 @@ function InfoBlock({ label, value, href }: { label: string; value: string; href?
   );
 }
 
-function Contact() {
+function Contact({ settings }: { settings: SiteSettings }) {
   const [sent, setSent] = useState(false);
   return (
     <section id="contact" className="relative py-28 sm:py-36">
-      <SectionHeader eyebrow="Reserve" title={<>Save your <span className="text-gradient-gold italic">seat.</span></>} sub="Drop us a note and we'll confirm by phone within the hour." />
+      <SectionHeader eyebrow="Inquiries & Events" title={<>Get in <span className="text-gradient-gold italic">touch.</span></>} sub="For private events, group bookings or general questions. For everyday orders, foodpanda is fastest." />
       <div className="mx-auto mt-16 max-w-3xl px-5 sm:px-8">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             const fd = new FormData(e.currentTarget);
-            const text = `Reservation request%0AName: ${fd.get("name")}%0APhone: ${fd.get("phone")}%0ADate: ${fd.get("date")}%0AGuests: ${fd.get("guests")}%0ANote: ${fd.get("note")}`;
-            window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank");
+            const text = encodeURIComponent(
+              `Inquiry\nName: ${fd.get("name")}\nPhone: ${fd.get("phone")}\nType: ${fd.get("type")}\nMessage: ${fd.get("note")}`,
+            );
+            window.open(`https://wa.me/${settings.whatsapp}?text=${text}`, "_blank");
             setSent(true);
           }}
           className="glass rounded-3xl p-6 sm:p-10 grid gap-5"
@@ -545,18 +559,19 @@ function Contact() {
             <Field name="name" label="Full name" placeholder="Your name" required />
             <Field name="phone" label="Phone" placeholder="+880 …" required type="tel" />
           </div>
-          <div className="grid sm:grid-cols-2 gap-5">
-            <Field name="date" label="Date & time" type="datetime-local" required />
-            <Field name="guests" label="Guests" type="number" placeholder="2" required />
-          </div>
-          <Field name="note" label="Note (optional)" placeholder="Window table, anniversary, dietary requests…" textarea />
+          <Field name="type" label="Inquiry type" placeholder="Private event, group booking, question…" required />
+          <Field name="note" label="Message" placeholder="Tell us what you have in mind." textarea required />
           <button type="submit" className="mt-2 rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">
-            Request reservation
+            Send via WhatsApp
           </button>
           {sent && (
             <p className="text-sm text-[var(--gold)] text-center">Opened in WhatsApp — send the message to confirm.</p>
           )}
         </form>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-5 py-2.5 text-sm hover-lift">Order on foodpanda</a>
+          <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-5 py-2.5 text-sm hover-lift">Call {settings.phone}</a>
+        </div>
       </div>
     </section>
   );
@@ -576,42 +591,43 @@ function Field({ name, label, placeholder, type = "text", required, textarea }: 
   );
 }
 
-function Footer() {
+function Footer({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="relative border-t border-border/60 mt-10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 py-14 grid gap-10 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground">#</span>
-            <span className="font-display text-xl font-semibold">HashTag</span>
+            <span className="font-display text-xl font-semibold">{settings.restaurant_name}</span>
           </div>
           <p className="mt-4 text-sm text-muted-foreground max-w-xs leading-relaxed">Restaurant, music cafe & lounge in the heart of Chattogram.</p>
         </div>
         <div className="text-sm text-muted-foreground space-y-2">
           <div className="text-[10px] uppercase tracking-[0.3em] text-foreground/80">Visit</div>
-          <p>{ADDRESS}</p>
-          <p>Open daily · 11:30 AM – 11 PM</p>
+          <p>{settings.address}</p>
+          <p>{settings.opening_hours}</p>
         </div>
         <div className="text-sm text-muted-foreground space-y-2">
           <div className="text-[10px] uppercase tracking-[0.3em] text-foreground/80">Contact</div>
-          <a href={`tel:${PHONE}`} className="block hover:text-foreground">{PHONE}</a>
-          <a href={`https://wa.me/${WHATSAPP}`} className="block hover:text-foreground">WhatsApp us</a>
+          <a href={`tel:${settings.phone}`} className="block hover:text-foreground">{settings.phone}</a>
+          <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="block hover:text-foreground">Order on foodpanda</a>
+          <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" className="block hover:text-foreground">WhatsApp (inquiries)</a>
         </div>
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 py-6 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-          <span>© {new Date().getFullYear()} HashTag Restaurant, Music Cafe & Lounge.</span>
-          <span>Mehedibag · Chattogram · Bangladesh</span>
+          <span>© {new Date().getFullYear()} {settings.restaurant_name} Restaurant, Music Cafe & Lounge.</span>
+          <span><a href="/admin" className="hover:text-foreground">Admin</a> · Mehedibag · Chattogram · Bangladesh</span>
         </div>
       </div>
     </footer>
   );
 }
 
-function WhatsAppFab() {
+function WhatsAppFab({ settings }: { settings: SiteSettings }) {
   return (
     <a
-      href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi HashTag, I'd like to reserve a table.")}`}
+      href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Hi HashTag, I have a question.")}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Chat on WhatsApp"
@@ -620,7 +636,7 @@ function WhatsAppFab() {
       <span className="grid h-11 w-11 place-items-center rounded-full bg-[#25D366] text-white">
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor"><path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .1 5.36.1 11.94c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.64a11.93 11.93 0 0 0 5.77 1.47h.01c6.58 0 11.94-5.36 11.94-11.94 0-3.19-1.24-6.19-3.47-8.41ZM12.05 21.3h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.72.97 1-3.62-.24-.37a9.93 9.93 0 1 1 18.42-5.25c0 5.48-4.46 9.86-10.04 9.86Zm5.45-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01a1.1 1.1 0 0 0-.8.37c-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.48.71.3 1.26.48 1.69.62.71.22 1.35.19 1.86.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/></svg>
       </span>
-      <span className="hidden sm:block text-sm font-medium pr-1">Chat on WhatsApp</span>
+      <span className="hidden sm:block text-sm font-medium pr-1">Inquiries on WhatsApp</span>
     </a>
   );
 }
