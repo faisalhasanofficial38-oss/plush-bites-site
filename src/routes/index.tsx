@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { getPublicSnapshot, type MenuItem, type SiteSettings } from "@/lib/restaurant.functions";
 import heroImg from "@/assets/hero.jpg";
 import dish1 from "@/assets/dish-1.jpg";
 import dish2 from "@/assets/dish-2.jpg";
@@ -13,7 +15,17 @@ import gallery1 from "@/assets/gallery-1.jpg";
 import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
 
+const snapshotQuery = queryOptions({
+  queryKey: ["public-snapshot"],
+  queryFn: () => getPublicSnapshot(),
+  staleTime: 60_000,
+});
+
+const FALLBACK_IMAGES = [menuPeri, menuPizza, menuNachos, menuCashew, dish1, dish2, dish3];
+const pickFallbackImage = (i: number) => FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(snapshotQuery),
   head: () => ({
     meta: [
       { title: "HashTag — Restaurant, Music Cafe & Lounge in Chattogram" },
@@ -64,32 +76,30 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { data } = useSuspenseQuery(snapshotQuery);
+  const { settings, items } = data;
   return (
     <div className="min-h-screen overflow-x-hidden text-foreground">
-      <Nav />
-      <Hero />
+      <Nav settings={settings} />
+      <Hero settings={settings} />
       <Marquee />
       <About />
-      <FeaturedMenu />
+      <FeaturedMenu items={items} settings={settings} />
       <Services />
       <Signature />
       <Gallery />
-      <ReservationCTA />
+      <ReservationCTA settings={settings} />
       <Testimonials />
       <FAQ />
-      <MapSection />
-      <Contact />
-      <Footer />
-      <WhatsAppFab />
+      <MapSection settings={settings} />
+      <Contact settings={settings} />
+      <Footer settings={settings} />
+      <WhatsAppFab settings={settings} />
     </div>
   );
 }
 
-const PHONE = "+8801869341634";
-const WHATSAPP = "8801869341634";
-const ADDRESS = "Plot No. 07, CDA Masjid Complex, Mehedibag, Chattogram 4000, Bangladesh";
-
-function Nav() {
+function Nav({ settings }: { settings: SiteSettings }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -113,7 +123,7 @@ function Nav() {
         <div className={`grid grid-cols-[minmax(0,1fr)_auto] sm:flex sm:items-center sm:justify-between gap-4 rounded-2xl px-5 py-3 transition-all ${scrolled ? "glass" : ""}`}>
           <a href="#top" className="flex min-w-0 items-center gap-2">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground shadow-[var(--shadow-gold)]">#</span>
-            <span className="font-display text-xl font-semibold tracking-tight">HashTag</span>
+            <span className="font-display text-xl font-semibold tracking-tight">{settings.restaurant_name}</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             {links.map(([l, h]) => (
@@ -121,7 +131,7 @@ function Nav() {
             ))}
           </nav>
           <div className="hidden sm:flex items-center gap-3">
-            <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve</a>
+            <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order on foodpanda</a>
           </div>
           <button onClick={() => setOpen(o => !o)} aria-label="Menu" className="md:hidden inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl glass-soft sm:ml-0">
             <span className="space-y-1.5">
@@ -137,7 +147,8 @@ function Nav() {
               {links.map(([l, h]) => (
                 <a key={l} href={h} onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground">{l}</a>
               ))}
-              <a href="#contact" onClick={() => setOpen(false)} className="mt-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-center text-sm font-medium text-primary-foreground">Reserve a Table</a>
+              <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" onClick={() => setOpen(false)} className="mt-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-center text-sm font-medium text-primary-foreground">Order on foodpanda</a>
+              <a href={`tel:${settings.phone}`} onClick={() => setOpen(false)} className="rounded-full glass-soft px-5 py-2.5 text-center text-sm font-medium">Call restaurant</a>
             </nav>
           </div>
         )}
@@ -146,7 +157,8 @@ function Nav() {
   );
 }
 
-function Hero() {
+function Hero({ settings }: { settings: SiteSettings }) {
+  const mapsHref = "https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9";
   return (
     <section id="top" className="relative min-h-[100svh] flex items-center pt-32 pb-20">
       <img src={heroImg} alt="Plated gourmet dish in candle-lit dining room" width={1920} height={1080}
@@ -158,18 +170,19 @@ function Hero() {
         <div className="max-w-3xl animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse"></span>
-            Mehedibag · Chattogram
+            {settings.hero_eyebrow}
           </div>
           <h1 className="mt-6 font-display text-5xl sm:text-7xl md:text-8xl font-semibold leading-[0.95]">
-            A taste worth <br />
-            <span className="text-gradient-gold italic">#hashtagging.</span>
+            {settings.hero_headline}
           </h1>
           <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
-            Restaurant, music cafe & lounge — where slow-cooked plates meet live acoustic nights and golden-hour cocktails. An evening you'll want to remember.
+            {settings.hero_description}
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href="#contact" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Reserve a Table</a>
-            <a href="#signature" className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Explore the menu →</a>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order on foodpanda</a>
+            <a href={`tel:${settings.phone}`} className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Call restaurant</a>
+            <a href={mapsHref} target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Get directions</a>
+            <a href="#menu" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">View menu →</a>
           </div>
           <dl className="mt-14 grid grid-cols-3 gap-4 max-w-lg">
             {[["4.0★", "889 Google reviews"], ["৳400–600", "Per person"], ["11:30–23", "Open daily"]].map(([k, v]) => (
