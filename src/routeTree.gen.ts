@@ -10,7 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as SiteReviewsRouteImport } from './routes/_site.reviews'
+import { Route as SiteOrderRouteImport } from './routes/_site.order'
+import { Route as SiteMenuRouteImport } from './routes/_site.menu'
+import { Route as SiteGalleryRouteImport } from './routes/_site.gallery'
+import { Route as SiteFaqRouteImport } from './routes/_site.faq'
+import { Route as SiteContactRouteImport } from './routes/_site.contact'
+import { Route as SiteAboutRouteImport } from './routes/_site.about'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const AuthRoute = AuthRouteImport.update({
@@ -18,9 +27,53 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteReviewsRoute = SiteReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteOrderRoute = SiteOrderRouteImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteMenuRoute = SiteMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteGalleryRoute = SiteGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteFaqRoute = SiteFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteAboutRoute = SiteAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => SiteRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -29,31 +82,88 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedRouteRouteWithChildren
+  '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/about': typeof SiteAboutRoute
+  '/contact': typeof SiteContactRoute
+  '/faq': typeof SiteFaqRoute
+  '/gallery': typeof SiteGalleryRoute
+  '/menu': typeof SiteMenuRoute
+  '/order': typeof SiteOrderRoute
+  '/reviews': typeof SiteReviewsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AuthenticatedRouteRouteWithChildren
+  '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/about': typeof SiteAboutRoute
+  '/contact': typeof SiteContactRoute
+  '/faq': typeof SiteFaqRoute
+  '/gallery': typeof SiteGalleryRoute
+  '/menu': typeof SiteMenuRoute
+  '/order': typeof SiteOrderRoute
+  '/reviews': typeof SiteReviewsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_site': typeof SiteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_site/about': typeof SiteAboutRoute
+  '/_site/contact': typeof SiteContactRoute
+  '/_site/faq': typeof SiteFaqRoute
+  '/_site/gallery': typeof SiteGalleryRoute
+  '/_site/menu': typeof SiteMenuRoute
+  '/_site/order': typeof SiteOrderRoute
+  '/_site/reviews': typeof SiteReviewsRoute
+  '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/admin'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/about'
+    | '/contact'
+    | '/faq'
+    | '/gallery'
+    | '/menu'
+    | '/order'
+    | '/reviews'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/admin'
-  id: '__root__' | '/_authenticated' | '/auth' | '/_authenticated/admin'
+  to:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/about'
+    | '/contact'
+    | '/faq'
+    | '/gallery'
+    | '/menu'
+    | '/order'
+    | '/reviews'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/_site'
+    | '/auth'
+    | '/_authenticated/admin'
+    | '/_site/about'
+    | '/_site/contact'
+    | '/_site/faq'
+    | '/_site/gallery'
+    | '/_site/menu'
+    | '/_site/order'
+    | '/_site/reviews'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  SiteRoute: typeof SiteRouteWithChildren
   AuthRoute: typeof AuthRoute
 }
 
@@ -66,12 +176,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/reviews': {
+      id: '/_site/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof SiteReviewsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/order': {
+      id: '/_site/order'
+      path: '/order'
+      fullPath: '/order'
+      preLoaderRoute: typeof SiteOrderRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/menu': {
+      id: '/_site/menu'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof SiteMenuRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/gallery': {
+      id: '/_site/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof SiteGalleryRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/faq': {
+      id: '/_site/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof SiteFaqRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/about': {
+      id: '/_site/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof SiteAboutRouteImport
+      parentRoute: typeof SiteRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -94,8 +267,33 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface SiteRouteChildren {
+  SiteAboutRoute: typeof SiteAboutRoute
+  SiteContactRoute: typeof SiteContactRoute
+  SiteFaqRoute: typeof SiteFaqRoute
+  SiteGalleryRoute: typeof SiteGalleryRoute
+  SiteMenuRoute: typeof SiteMenuRoute
+  SiteOrderRoute: typeof SiteOrderRoute
+  SiteReviewsRoute: typeof SiteReviewsRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteAboutRoute: SiteAboutRoute,
+  SiteContactRoute: SiteContactRoute,
+  SiteFaqRoute: SiteFaqRoute,
+  SiteGalleryRoute: SiteGalleryRoute,
+  SiteMenuRoute: SiteMenuRoute,
+  SiteOrderRoute: SiteOrderRoute,
+  SiteReviewsRoute: SiteReviewsRoute,
+  SiteIndexRoute: SiteIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  SiteRoute: SiteRouteWithChildren,
   AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport

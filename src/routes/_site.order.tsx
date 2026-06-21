@@ -85,8 +85,12 @@ function ReservationForm({ items }: { items: string[] }) {
   const [error, setError] = useState<string | null>(null);
   const today = new Date().toISOString().slice(0, 10);
 
+  type ResInput = {
+    name: string; phone: string; email?: string; guests: number;
+    visit_date: string; visit_time: string; selected_foods: string; special_request: string;
+  };
   const mutation = useMutation({
-    mutationFn: (data: Parameters<typeof submit>[0]["data"]) => submit({ data }),
+    mutationFn: (data: ResInput) => submit({ data }),
   });
 
   function toggleItem(name: string) {
