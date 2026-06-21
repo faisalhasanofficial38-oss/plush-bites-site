@@ -43,7 +43,7 @@ function ReviewsPage() {
             <div className="text-gradient-gold font-display text-5xl leading-none">"</div>
             <blockquote className="mt-2 text-foreground/90 leading-relaxed">{t.q}</blockquote>
             <figcaption className="mt-8 flex items-center gap-3 pt-6 border-t border-border/60">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--gradient-gold)] font-display text-primary-foreground shrink-0">{t.n[0]}</div>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold-gradient font-display text-primary-foreground shrink-0">{t.n[0]}</div>
               <div className="min-w-0">
                 <div className="text-sm font-medium truncate">{t.n}</div>
                 <div className="text-xs text-muted-foreground truncate">{t.r}</div>
@@ -55,7 +55,7 @@ function ReviewsPage() {
       </section>
 
       <section className="mx-auto max-w-3xl px-5 sm:px-8 pb-24 text-center">
-        <Link to="/order" className="inline-flex rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Reserve your table →</Link>
+        <Link to="/order" className="inline-flex rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Reserve your table →</Link>
       </section>
     </>
   );

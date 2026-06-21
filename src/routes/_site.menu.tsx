@@ -53,7 +53,7 @@ function MenuPage() {
               className="w-full rounded-full bg-input/40 border border-border/60 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[var(--gold)]" />
           </div>
           <a href={settings.foodpanda_url} target="_blank" rel="noreferrer"
-            className="rounded-full bg-[var(--gradient-gold)] px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] text-center">Order on foodpanda</a>
+            className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] text-center">Order on foodpanda</a>
         </div>
 
         {categories.length > 0 && (
@@ -104,6 +104,6 @@ function MenuPage() {
 
 function CatChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`shrink-0 rounded-full px-5 py-2 text-sm transition-all ${active ? "bg-[var(--gradient-gold)] text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
+    <button onClick={onClick} className={`shrink-0 rounded-full px-5 py-2 text-sm transition-all ${active ? "bg-gold-gradient text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
   );
 }

@@ -50,7 +50,7 @@ function ModeButton({ active, onClick, title, sub, icon }: { active: boolean; on
     <button onClick={onClick}
       className={`group relative overflow-hidden rounded-3xl p-6 text-left transition-all [perspective:1000px] ${active ? "glass shadow-[var(--shadow-gold)] border border-[var(--gold)]/40" : "glass-soft hover-lift"}`}>
       <div className="flex items-center gap-4">
-        <span className={`grid h-14 w-14 place-items-center rounded-2xl text-3xl transition-transform group-hover:scale-110 ${active ? "bg-[var(--gradient-gold)]" : "bg-input/40"}`}>{icon}</span>
+        <span className={`grid h-14 w-14 place-items-center rounded-2xl text-3xl transition-transform group-hover:scale-110 ${active ? "bg-gold-gradient" : "bg-input/40"}`}>{icon}</span>
         <div>
           <div className="font-display text-xl">{title}</div>
           <div className="text-xs text-muted-foreground mt-1">{sub}</div>
@@ -70,7 +70,7 @@ function DeliveryPanel({ settings }: { settings: { foodpanda_url: string; phone:
         <p className="mt-4 text-muted-foreground max-w-md mx-auto">The full HashTag kitchen, delivered fresh. Same plates as dine-in — pay online or cash on delivery.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a href={settings.foodpanda_url} target="_blank" rel="noreferrer"
-            className="rounded-full bg-[var(--gradient-gold)] px-8 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Open foodpanda →</a>
+            className="rounded-full bg-gold-gradient px-8 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Open foodpanda →</a>
           <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-8 py-4 text-sm font-medium hover-lift">Call to order</a>
         </div>
         <p className="mt-6 text-xs text-muted-foreground">Foodpanda handles delivery, payment and tracking.</p>
@@ -152,7 +152,7 @@ function ReservationForm({ items }: { items: string[] }) {
               const active = selected.includes(name);
               return (
                 <button type="button" key={name} onClick={() => toggleItem(name)}
-                  className={`rounded-full px-3 py-1.5 text-xs transition-all ${active ? "bg-[var(--gradient-gold)] text-primary-foreground" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{name}</button>
+                  className={`rounded-full px-3 py-1.5 text-xs transition-all ${active ? "bg-gold-gradient text-primary-foreground" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{name}</button>
               );
             })}
           </div>
@@ -164,7 +164,7 @@ function ReservationForm({ items }: { items: string[] }) {
 
       {error && <p className="text-sm text-destructive">{error}</p>}
       <button type="submit" disabled={mutation.isPending}
-        className="mt-2 rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100">
+        className="mt-2 rounded-full bg-gold-gradient px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100">
         {mutation.isPending ? "Submitting…" : "Request reservation"}
       </button>
       <p className="text-xs text-muted-foreground text-center">We'll confirm by phone. Live music nights fill up fast.</p>

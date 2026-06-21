@@ -52,7 +52,7 @@ function ContactPage() {
           </div>
           <Field name="type" label="Inquiry type" placeholder="Private event, group booking, question…" required />
           <Field name="note" label="Message" placeholder="Tell us what you have in mind." textarea required />
-          <button type="submit" className="mt-2 rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">
+          <button type="submit" className="mt-2 rounded-full bg-gold-gradient px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">
             Send via WhatsApp
           </button>
           {sent && <p className="text-sm text-[var(--gold)] text-center">Opened in WhatsApp — send the message to confirm.</p>}
@@ -64,7 +64,7 @@ function ContactPage() {
             <p className="text-muted-foreground leading-relaxed">{settings.address}</p>
             <p className="text-sm text-muted-foreground">{settings.opening_hours}</p>
             <a href="https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9" target="_blank" rel="noreferrer"
-              className="inline-flex rounded-full bg-[var(--gradient-gold)] px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Get directions →</a>
+              className="inline-flex rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Get directions →</a>
           </div>
           <div className="min-h-[280px] relative flex-1">
             <iframe
@@ -84,7 +84,7 @@ function ContactCard({ icon, label, value, href }: { icon: string; label: string
   return (
     <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"
       className="glass hover-lift rounded-3xl p-8 flex items-center gap-5 group">
-      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-[var(--gradient-gold)] text-2xl shrink-0">{icon}</span>
+      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gold-gradient text-2xl shrink-0">{icon}</span>
       <div className="min-w-0">
         <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{label}</div>
         <div className="mt-1 font-display text-lg truncate group-hover:text-gradient-gold">{value}</div>

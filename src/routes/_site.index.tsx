@@ -65,7 +65,7 @@ function Home() {
               {settings.hero_description}
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <Link to="/order" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order now →</Link>
+              <Link to="/order" className="rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order now →</Link>
               <Link to="/menu" className="rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">View menu</Link>
               <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Call restaurant</a>
               <a href="https://maps.app.goo.gl/xKQkJ8mMpbg97x4C9" target="_blank" rel="noreferrer" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Get directions</a>
@@ -145,7 +145,7 @@ function Home() {
           ))}
         </div>
         <div className="mx-auto mt-12 max-w-7xl px-5 sm:px-8 flex flex-wrap justify-center gap-3">
-          <Link to="/menu" className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Explore full menu →</Link>
+          <Link to="/menu" className="rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Explore full menu →</Link>
           <Link to="/order" className="rounded-full glass-soft px-7 py-3.5 text-sm font-medium hover-lift">Reserve a table</Link>
         </div>
       </section>
@@ -167,7 +167,7 @@ function Home() {
                 </p>
               </div>
               <div className="flex flex-col gap-3">
-                <Link to="/order" className="rounded-full bg-[var(--gradient-gold)] px-7 py-4 text-center text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Reserve a table</Link>
+                <Link to="/order" className="rounded-full bg-gold-gradient px-7 py-4 text-center text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02]">Reserve a table</Link>
                 <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="rounded-full glass px-7 py-4 text-center text-sm font-medium hover-lift">Order on foodpanda</a>
                 <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-7 py-4 text-center text-sm font-medium hover-lift">Call {settings.phone}</a>
               </div>

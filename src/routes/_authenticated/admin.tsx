@@ -92,7 +92,7 @@ function AdminPage() {
       <header className="border-b border-border/60 sticky top-0 z-30 backdrop-blur-xl bg-background/70">
         <div className="mx-auto max-w-6xl px-5 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display font-bold text-primary-foreground">#</span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gold-gradient font-display font-bold text-primary-foreground">#</span>
             <div className="min-w-0">
               <div className="font-display text-lg leading-none">HashTag Dashboard</div>
               <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground truncate">{email}</div>
@@ -220,7 +220,7 @@ function MenuManager() {
         </div>
         <div className="flex gap-2">
           <button onClick={addCategory} className="rounded-full glass-soft px-4 py-2 text-sm hover-lift">+ Category</button>
-          <button onClick={() => setEditing({})} className="rounded-full bg-[var(--gradient-gold)] px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)]">+ Add item</button>
+          <button onClick={() => setEditing({})} className="rounded-full bg-gold-gradient px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)]">+ Add item</button>
         </div>
       </div>
 
@@ -328,7 +328,7 @@ function ItemForm({
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
       <div className="flex gap-3">
-        <button type="submit" className="rounded-full bg-[var(--gradient-gold)] px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)]">Save</button>
+        <button type="submit" className="rounded-full bg-gold-gradient px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)]">Save</button>
         <button type="button" onClick={onCancel} className="rounded-full glass-soft px-6 py-2.5 text-sm hover-lift">Cancel</button>
       </div>
     </form>
@@ -391,7 +391,7 @@ function SettingsManager() {
       {msg && <p className="text-sm text-[var(--gold)]">{msg}</p>}
       {err && <p className="text-sm text-destructive">{err}</p>}
       <div className="sticky bottom-4">
-        <button disabled={saving} className="rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] disabled:opacity-60">
+        <button disabled={saving} className="rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] disabled:opacity-60">
           {saving ? "Saving…" : "Save changes"}
         </button>
       </div>
@@ -539,7 +539,7 @@ function ReservationsManager() {
 
 function FilterPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`shrink-0 rounded-full px-4 py-1.5 text-xs transition-all ${active ? "bg-[var(--gradient-gold)] text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
+    <button onClick={onClick} className={`shrink-0 rounded-full px-4 py-1.5 text-xs transition-all ${active ? "bg-gold-gradient text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
   );
 }
 

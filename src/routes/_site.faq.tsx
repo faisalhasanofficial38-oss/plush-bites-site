@@ -61,7 +61,7 @@ function FaqPage() {
       <section className="mx-auto max-w-3xl px-5 sm:px-8 pb-24 text-center">
         <p className="text-muted-foreground mb-5">Still have a question?</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/contact" className="rounded-full bg-[var(--gradient-gold)] px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Get in touch</Link>
+          <Link to="/contact" className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Get in touch</Link>
           <Link to="/order" className="rounded-full glass-soft px-6 py-3 text-sm hover-lift">Reserve a table</Link>
         </div>
       </section>

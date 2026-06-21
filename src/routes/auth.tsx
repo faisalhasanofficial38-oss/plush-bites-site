@@ -89,7 +89,7 @@ function AuthPage() {
         </Link>
         <div className="mt-6 glass rounded-3xl p-8 sm:p-10">
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground">#</span>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold-gradient font-display text-lg font-bold text-primary-foreground">#</span>
             <div>
               <div className="font-display text-2xl">HashTag Admin</div>
               <div className="text-xs text-muted-foreground">{mode === "signin" ? "Sign in to manage your restaurant" : "Create the owner account"}</div>
@@ -127,7 +127,7 @@ function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] disabled:opacity-60"
+              className="w-full rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-gold)] disabled:opacity-60"
             >
               {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
             </button>

@@ -32,7 +32,7 @@ export function SiteNav({ settings }: { settings: SiteSettings }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className={`grid grid-cols-[minmax(0,1fr)_auto] lg:flex lg:items-center lg:justify-between gap-4 rounded-2xl px-5 py-3 transition-all ${scrolled ? "glass" : ""}`}>
           <Link to="/" className="flex min-w-0 items-center gap-2">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground shadow-[var(--shadow-gold)]">#</span>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gold-gradient font-display text-lg font-bold text-primary-foreground shadow-[var(--shadow-gold)]">#</span>
             <span className="font-display text-xl font-semibold tracking-tight truncate">{settings.restaurant_name}</span>
           </Link>
           <nav className="hidden lg:flex items-center gap-7 text-sm text-muted-foreground">
@@ -47,7 +47,7 @@ export function SiteNav({ settings }: { settings: SiteSettings }) {
             ))}
           </nav>
           <div className="hidden sm:flex items-center gap-3">
-            <Link to="/order" className="rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order now</Link>
+            <Link to="/order" className="rounded-full bg-gold-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Order now</Link>
           </div>
           <button onClick={() => setOpen(o => !o)} aria-label="Menu" className="lg:hidden inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl glass-soft">
             <span className="space-y-1.5">
@@ -66,7 +66,7 @@ export function SiteNav({ settings }: { settings: SiteSettings }) {
                   inactiveProps={{ className: "text-muted-foreground hover:text-foreground" }}
                   className="rounded-lg px-3 py-2 text-sm transition-colors">{label}</Link>
               ))}
-              <Link to="/order" className="mt-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground">Order now</Link>
+              <Link to="/order" className="mt-2 rounded-full bg-gold-gradient px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground">Order now</Link>
             </nav>
           </div>
         )}
@@ -89,7 +89,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2 max-w-md">
           <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--gradient-gold)] font-display text-lg font-bold text-primary-foreground">#</span>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold-gradient font-display text-lg font-bold text-primary-foreground">#</span>
             <span className="font-display text-2xl font-semibold">{settings.restaurant_name}</span>
           </Link>
           <p className="mt-5 text-sm text-muted-foreground leading-relaxed">Restaurant, music cafe & lounge in the heart of Chattogram. Continental plates, signature cocktails and live acoustic nights — under one roof.</p>

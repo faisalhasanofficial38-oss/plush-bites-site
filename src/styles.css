@@ -202,6 +202,13 @@
   }
 }
 
+/* Gold gradient background — use this instead of bg-[var(--gradient-gold)],
+   which incorrectly tries to set a gradient as background-color. */
+@utility bg-gold-gradient {
+  background-image: var(--gradient-gold);
+  background-color: var(--gold);
+}
+
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }

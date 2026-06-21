@@ -27,7 +27,7 @@ function AboutPage() {
       <section className="relative py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
           <div className="relative animate-float-slow">
-            <div className="absolute -inset-6 rounded-[2rem] bg-[var(--gradient-gold)] opacity-20 blur-3xl"></div>
+            <div className="absolute -inset-6 rounded-[2rem] bg-gold-gradient opacity-20 blur-3xl"></div>
             <div className="relative overflow-hidden rounded-[2rem] border border-border/60">
               <img src={aboutImg} alt="HashTag Restaurant interior — velvet booths, brick wall and live music stage" loading="lazy" className="h-full w-full object-cover" />
             </div>
@@ -83,7 +83,7 @@ function AboutPage() {
           </div>
         </div>
         <div className="mt-10 text-center">
-          <Link to="/order" className="inline-flex rounded-full bg-[var(--gradient-gold)] px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Reserve your table →</Link>
+          <Link to="/order" className="inline-flex rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Reserve your table →</Link>
         </div>
       </section>
     </>
