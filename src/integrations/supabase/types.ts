@@ -97,6 +97,51 @@ export type Database = {
           },
         ]
       }
+      reservations: {
+        Row: {
+          created_at: string
+          email: string | null
+          guests: number
+          id: string
+          name: string
+          phone: string
+          selected_foods: string
+          special_request: string
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+          visit_date: string
+          visit_time: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          guests?: number
+          id?: string
+          name: string
+          phone: string
+          selected_foods?: string
+          special_request?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          visit_date: string
+          visit_time: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          guests?: number
+          id?: string
+          name?: string
+          phone?: string
+          selected_foods?: string
+          special_request?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          visit_date?: string
+          visit_time?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           address: string
@@ -178,6 +223,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      reservation_status: "pending" | "confirmed" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -306,6 +352,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      reservation_status: ["pending", "confirmed", "completed", "cancelled"],
     },
   },
 } as const
