@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { listReservations, updateReservationStatus, deleteReservation, type Reservation, type ReservationStatus } from "@/lib/reservations.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -45,7 +47,7 @@ function AdminPage() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [email, setEmail] = useState<string>("");
-  const [tab, setTab] = useState<"menu" | "settings">("menu");
+  const [tab, setTab] = useState<"menu" | "reservations" | "settings">("menu");
 
   useEffect(() => {
     (async () => {
@@ -105,6 +107,7 @@ function AdminPage() {
           <nav className="flex gap-1 text-sm">
             {[
               ["menu", "Menu items"],
+              ["reservations", "Reservations"],
               ["settings", "Site settings"],
             ].map(([k, label]) => (
               <button
@@ -120,7 +123,7 @@ function AdminPage() {
       </header>
 
       <main className="mx-auto max-w-6xl px-5 py-10">
-        {tab === "menu" ? <MenuManager /> : <SettingsManager />}
+        {tab === "menu" ? <MenuManager /> : tab === "reservations" ? <ReservationsManager /> : <SettingsManager />}
       </main>
     </div>
   );
@@ -428,4 +431,119 @@ function Check({ label, checked, onChange }: { label: string; checked: boolean; 
       <span>{label}</span>
     </label>
   );
+}
+
+/* --------------------------- Reservations manager --------------------------- */
+
+const STATUS_OPTIONS: { v: ReservationStatus; label: string; cls: string }[] = [
+  { v: "pending", label: "Pending", cls: "bg-yellow-500/15 text-yellow-300" },
+  { v: "confirmed", label: "Confirmed", cls: "bg-[var(--gold)]/15 text-[var(--gold)]" },
+  { v: "completed", label: "Completed", cls: "bg-emerald-500/15 text-emerald-300" },
+  { v: "cancelled", label: "Cancelled", cls: "bg-destructive/15 text-destructive" },
+];
+
+function ReservationsManager() {
+  const fetchList = useServerFn(listReservations);
+  const setStatus = useServerFn(updateReservationStatus);
+  const removeReservation = useServerFn(deleteReservation);
+  const [list, setList] = useState<Reservation[] | null>(null);
+  const [filter, setFilter] = useState<ReservationStatus | "all">("all");
+  const [err, setErr] = useState<string | null>(null);
+
+  async function load() {
+    setErr(null);
+    try {
+      const data = await fetchList();
+      setList(data);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed to load");
+    }
+  }
+  useEffect(() => { load(); }, []);
+
+  const visible = useMemo(() => (list ?? []).filter(r => filter === "all" || r.status === filter), [list, filter]);
+  const counts = useMemo(() => {
+    const c: Record<string, number> = { all: list?.length ?? 0 };
+    for (const r of list ?? []) c[r.status] = (c[r.status] ?? 0) + 1;
+    return c;
+  }, [list]);
+
+  async function changeStatus(id: string, status: ReservationStatus) {
+    await setStatus({ data: { id, status } });
+    setList(l => l?.map(r => r.id === id ? { ...r, status } : r) ?? null);
+  }
+
+  async function onDelete(id: string) {
+    if (!confirm("Delete this reservation?")) return;
+    await removeReservation({ data: { id } });
+    setList(l => l?.filter(r => r.id !== id) ?? null);
+  }
+
+  if (list === null && !err) return <div className="text-muted-foreground">Loading reservations…</div>;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="font-display text-3xl">Reservations</h2>
+        <p className="text-sm text-muted-foreground mt-1">{counts.all ?? 0} total · {counts.pending ?? 0} pending</p>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        <FilterPill label={`All (${counts.all ?? 0})`} active={filter === "all"} onClick={() => setFilter("all")} />
+        {STATUS_OPTIONS.map(s => (
+          <FilterPill key={s.v} label={`${s.label} (${counts[s.v] ?? 0})`} active={filter === s.v} onClick={() => setFilter(s.v)} />
+        ))}
+      </div>
+
+      {err && <p className="text-sm text-destructive">{err}</p>}
+
+      {visible.length === 0 ? (
+        <div className="glass rounded-3xl p-12 text-center text-muted-foreground">No reservations.</div>
+      ) : (
+        <div className="space-y-3">
+          {visible.map(r => (
+            <article key={r.id} className="glass rounded-2xl p-5 grid gap-4 lg:grid-cols-[1fr_auto] items-start">
+              <div className="min-w-0 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-display text-lg">{r.name}</span>
+                  <StatusBadge status={r.status} />
+                  <span className="text-xs text-muted-foreground">· {r.guests} guest{r.guests !== 1 ? "s" : ""}</span>
+                </div>
+                <div className="text-sm text-muted-foreground flex flex-wrap gap-x-4 gap-y-1">
+                  <span>📅 {r.visit_date} · {r.visit_time.slice(0, 5)}</span>
+                  <a href={`tel:${r.phone}`} className="hover:text-foreground">📞 {r.phone}</a>
+                  {r.email && <a href={`mailto:${r.email}`} className="hover:text-foreground truncate">✉ {r.email}</a>}
+                </div>
+                {r.selected_foods && (
+                  <div className="text-xs"><span className="text-muted-foreground">Foods:</span> <span className="text-foreground/80">{r.selected_foods}</span></div>
+                )}
+                {r.special_request && (
+                  <div className="text-xs"><span className="text-muted-foreground">Note:</span> <span className="text-foreground/80">{r.special_request}</span></div>
+                )}
+                <div className="text-[10px] text-muted-foreground">Submitted {new Date(r.created_at).toLocaleString()}</div>
+              </div>
+              <div className="flex flex-wrap gap-2 shrink-0">
+                <select value={r.status} onChange={(e) => changeStatus(r.id, e.target.value as ReservationStatus)}
+                  className="rounded-full bg-input/40 border border-border/60 px-3 py-1.5 text-xs">
+                  {STATUS_OPTIONS.map(s => <option key={s.v} value={s.v}>{s.label}</option>)}
+                </select>
+                <button onClick={() => onDelete(r.id)} className="text-xs rounded-full px-3 py-1.5 text-muted-foreground hover:text-destructive">Delete</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FilterPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className={`shrink-0 rounded-full px-4 py-1.5 text-xs transition-all ${active ? "bg-[var(--gradient-gold)] text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
+  );
+}
+
+function StatusBadge({ status }: { status: ReservationStatus }) {
+  const o = STATUS_OPTIONS.find(s => s.v === status)!;
+  return <span className={`text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 ${o.cls}`}>{o.label}</span>;
 }
