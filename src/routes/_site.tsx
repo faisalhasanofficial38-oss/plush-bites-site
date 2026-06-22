@@ -22,7 +22,7 @@ function SiteLayout() {
       <main>
         <Outlet />
       </main>
-      <SiteFooter settings={data.settings} />
+      <SiteFooter settings={data.settings} socials={data.socials} />
       <WhatsAppFab settings={data.settings} />
     </div>
   );
