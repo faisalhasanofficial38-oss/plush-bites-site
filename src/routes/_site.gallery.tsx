@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { snapshotQuery } from "./_site";
 import { PageHero } from "@/components/site-ui";
 import aboutImg from "@/assets/about.jpg";
 import dish1 from "@/assets/dish-1.jpg";
@@ -11,7 +13,7 @@ import gallery3 from "@/assets/gallery-3.jpg";
 import menuPeri from "@/assets/menu-peri.jpg";
 import menuPizza from "@/assets/menu-pizza.jpg";
 
-const SHOTS = [
+const FALLBACK_SHOTS = [
   { src: gallery1, alt: "Couple having a romantic candle-lit dinner at HashTag" },
   { src: dish2, alt: "Smoked signature cocktail at the bar" },
   { src: gallery2, alt: "Bartender pouring a craft cocktail behind the bar" },
@@ -38,6 +40,11 @@ export const Route = createFileRoute("/_site/gallery")({
 });
 
 function GalleryPage() {
+  const { data: { gallery } } = useSuspenseQuery(snapshotQuery);
+  type Shot = { src: string; alt: string; kind: "image" | "video"; poster?: string | null; caption?: string };
+  const SHOTS: Shot[] = gallery.length > 0
+    ? gallery.map(g => ({ src: g.url, alt: g.alt || "HashTag", kind: g.kind, poster: g.poster_url, caption: g.caption }))
+    : FALLBACK_SHOTS.map(s => ({ ...s, kind: "image" as const }));
   const [open, setOpen] = useState<number | null>(null);
   return (
     <>
@@ -48,8 +55,14 @@ function GalleryPage() {
           {SHOTS.map((s, i) => (
             <button key={i} onClick={() => setOpen(i)}
               className="group mb-5 block w-full overflow-hidden rounded-3xl border border-border/60 hover-lift break-inside-avoid text-left">
-              <img src={s.src} alt={s.alt} loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              {s.kind === "video" ? (
+                <video src={s.src} poster={s.poster ?? undefined} muted loop playsInline
+                  onMouseEnter={(e) => e.currentTarget.play()} onMouseLeave={(e) => e.currentTarget.pause()}
+                  className="h-full w-full object-cover" />
+              ) : (
+                <img src={s.src} alt={s.alt} loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+              )}
             </button>
           ))}
         </div>
@@ -59,7 +72,9 @@ function GalleryPage() {
         <div onClick={() => setOpen(null)} className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-up">
           <button aria-label="Close" onClick={() => setOpen(null)} className="absolute top-6 right-6 grid h-11 w-11 place-items-center rounded-full glass">✕</button>
           <button aria-label="Previous" onClick={(e) => { e.stopPropagation(); setOpen((open - 1 + SHOTS.length) % SHOTS.length); }} className="absolute left-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass">‹</button>
-          <img src={SHOTS[open].src} alt={SHOTS[open].alt} className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain" onClick={e => e.stopPropagation()} />
+          {SHOTS[open].kind === "video"
+            ? <video src={SHOTS[open].src} poster={SHOTS[open].poster ?? undefined} controls autoPlay className="max-h-[90vh] max-w-[90vw] rounded-2xl" onClick={e => e.stopPropagation()} />
+            : <img src={SHOTS[open].src} alt={SHOTS[open].alt} className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain" onClick={e => e.stopPropagation()} />}
           <button aria-label="Next" onClick={(e) => { e.stopPropagation(); setOpen((open + 1) % SHOTS.length); }} className="absolute right-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass">›</button>
         </div>
       )}

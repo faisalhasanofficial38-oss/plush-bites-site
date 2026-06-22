@@ -36,10 +36,28 @@ export type MenuItem = {
   sort_order: number;
 };
 
+export type GalleryMedia = {
+  id: string; kind: "image" | "video"; url: string; poster_url: string | null;
+  alt: string; caption: string; sort_order: number;
+};
+export type Review = {
+  id: string; name: string; rating: number; message: string; role_label: string;
+  is_featured: boolean; sort_order: number;
+};
+export type Faq = { id: string; question: string; answer: string; sort_order: number };
+export type SocialLinks = {
+  facebook: string; instagram: string; tiktok: string; youtube: string;
+  x_twitter: string; whatsapp: string; email: string;
+};
+
 export type PublicSnapshot = {
   settings: SiteSettings;
   categories: MenuCategory[];
   items: MenuItem[];
+  gallery: GalleryMedia[];
+  reviews: Review[];
+  faqs: Faq[];
+  socials: SocialLinks;
 };
 
 const DEFAULTS: SiteSettings = {
@@ -58,11 +76,16 @@ const DEFAULTS: SiteSettings = {
     "https://www.google.com/maps?q=HashTag+Restaurant+Mehedibag+Chattogram&output=embed",
 };
 
+const SOCIAL_DEFAULTS: SocialLinks = {
+  facebook: "", instagram: "", tiktok: "", youtube: "", x_twitter: "",
+  whatsapp: "", email: "",
+};
+
 export const getPublicSnapshot = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicSnapshot> => {
     try {
       const sb = publicClient();
-      const [settingsRes, catRes, itemRes] = await Promise.all([
+      const [settingsRes, catRes, itemRes, galRes, revRes, faqRes, socRes] = await Promise.all([
         sb.from("site_settings").select("*").eq("id", 1).maybeSingle(),
         sb
           .from("menu_categories")
@@ -76,16 +99,28 @@ export const getPublicSnapshot = createServerFn({ method: "GET" }).handler(
           )
           .eq("is_visible", true)
           .order("sort_order", { ascending: true }),
+        sb.from("gallery_media").select("id, kind, url, poster_url, alt, caption, sort_order")
+          .eq("is_visible", true).order("sort_order", { ascending: true }),
+        sb.from("reviews").select("id, name, rating, message, role_label, is_featured, sort_order")
+          .eq("is_visible", true).order("sort_order", { ascending: true }),
+        sb.from("faqs").select("id, question, answer, sort_order")
+          .eq("is_visible", true).order("sort_order", { ascending: true }),
+        sb.from("social_links").select("facebook, instagram, tiktok, youtube, x_twitter, whatsapp, email")
+          .eq("id", 1).maybeSingle(),
       ]);
       const s = settingsRes.data as SiteSettings | null;
       return {
         settings: { ...DEFAULTS, ...(s ?? {}) },
         categories: (catRes.data ?? []) as MenuCategory[],
         items: (itemRes.data ?? []) as MenuItem[],
+        gallery: (galRes.data ?? []) as GalleryMedia[],
+        reviews: (revRes.data ?? []) as Review[],
+        faqs: (faqRes.data ?? []) as Faq[],
+        socials: { ...SOCIAL_DEFAULTS, ...((socRes.data as SocialLinks | null) ?? {}) },
       };
     } catch (e) {
       console.error("[getPublicSnapshot] failed", e);
-      return { settings: DEFAULTS, categories: [], items: [] };
+      return { settings: DEFAULTS, categories: [], items: [], gallery: [], reviews: [], faqs: [], socials: SOCIAL_DEFAULTS };
     }
   },
 );

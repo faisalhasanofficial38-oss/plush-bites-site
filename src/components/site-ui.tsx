@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import type { SiteSettings } from "@/lib/restaurant.functions";
+import type { SiteSettings, SocialLinks } from "@/lib/restaurant.functions";
 
 const NAV_LINKS = [
   { to: "/", label: "Home" },
@@ -75,15 +75,16 @@ export function SiteNav({ settings }: { settings: SiteSettings }) {
   );
 }
 
-export function SiteFooter({ settings }: { settings: SiteSettings }) {
-  const socials: { label: string; href: string; icon: ReactNode }[] = [
-    { label: "Facebook", href: "https://www.facebook.com/hashtagmusiccafe/", icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg> },
-    { label: "Instagram", href: "https://www.instagram.com/hashtagmusiccafe", icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> },
-    { label: "YouTube", href: "https://youtube.com/@hashtagmusiccafe", icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg> },
-    { label: "TikTok", href: "https://tiktok.com/@hashtag.music.cafe", icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M19.6 6.6a5.4 5.4 0 0 1-3.3-1.2 5.4 5.4 0 0 1-2-3.3h-3.5v13.6a2.5 2.5 0 1 1-2.5-2.5c.3 0 .6 0 .8.1V9.7a6 6 0 1 0 5.3 6V9a8.5 8.5 0 0 0 5.2 1.8V6.6Z"/></svg> },
-    { label: "X", href: "https://x.com/HashTagMCafe", icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-7.06l-5.52-7.21L4.1 22H.84l8.05-9.2L1 2h7.22l4.99 6.6L18.244 2Zm-1.24 18h1.84L7.06 4H5.1l11.9 16Z"/></svg> },
-    { label: "WhatsApp", href: `https://api.whatsapp.com/send?phone=${settings.whatsapp}`, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M20.5 3.5A11.94 11.94 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.64A11.93 11.93 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.24-6.2-3.5-8.5Z"/></svg> },
-  ];
+export function SiteFooter({ settings, socials }: { settings: SiteSettings; socials: SocialLinks }) {
+  const items: { label: string; href: string; icon: ReactNode }[] = [
+    socials.facebook && { label: "Facebook", href: socials.facebook, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg> },
+    socials.instagram && { label: "Instagram", href: socials.instagram, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> },
+    socials.youtube && { label: "YouTube", href: socials.youtube, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg> },
+    socials.tiktok && { label: "TikTok", href: socials.tiktok, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M19.6 6.6a5.4 5.4 0 0 1-3.3-1.2 5.4 5.4 0 0 1-2-3.3h-3.5v13.6a2.5 2.5 0 1 1-2.5-2.5c.3 0 .6 0 .8.1V9.7a6 6 0 1 0 5.3 6V9a8.5 8.5 0 0 0 5.2 1.8V6.6Z"/></svg> },
+    socials.x_twitter && { label: "X", href: socials.x_twitter, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-7.06l-5.52-7.21L4.1 22H.84l8.05-9.2L1 2h7.22l4.99 6.6L18.244 2Zm-1.24 18h1.84L7.06 4H5.1l11.9 16Z"/></svg> },
+    (socials.whatsapp || settings.whatsapp) && { label: "WhatsApp", href: `https://api.whatsapp.com/send?phone=${socials.whatsapp || settings.whatsapp}`, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M20.5 3.5A11.94 11.94 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.64A11.93 11.93 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.24-6.2-3.5-8.5Z"/></svg> },
+    socials.email && { label: "Email", href: `mailto:${socials.email}`, icon: <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> },
+  ].filter(Boolean) as { label: string; href: string; icon: ReactNode }[];
   return (
     <footer className="relative border-t border-border/60 mt-10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
@@ -94,7 +95,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
           </Link>
           <p className="mt-5 text-sm text-muted-foreground leading-relaxed">Restaurant, music cafe & lounge in the heart of Chattogram. Continental plates, signature cocktails and live acoustic nights — under one roof.</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {socials.map(s => (
+            {items.map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}
                 className="grid h-10 w-10 place-items-center rounded-full glass-soft text-muted-foreground hover:text-[var(--gold)] hover-lift transition-colors">
                 {s.icon}
@@ -110,9 +111,9 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         </div>
         <div className="text-sm space-y-3">
           <div className="text-[10px] uppercase tracking-[0.3em] text-foreground/80">Contact</div>
-          <a href={`tel:${settings.phone}`} className="block text-muted-foreground hover:text-foreground">01869-341634</a>
-          <a href="mailto:hashtagcafe.ctg@gmail.com" className="block text-muted-foreground hover:text-foreground break-all">hashtagcafe.ctg@gmail.com</a>
-          <a href={`https://api.whatsapp.com/send?phone=${settings.whatsapp}`} target="_blank" rel="noreferrer" className="block text-muted-foreground hover:text-foreground">WhatsApp inquiries</a>
+          <a href={`tel:${settings.phone}`} className="block text-muted-foreground hover:text-foreground">{settings.phone}</a>
+          {socials.email && <a href={`mailto:${socials.email}`} className="block text-muted-foreground hover:text-foreground break-all">{socials.email}</a>}
+          <a href={`https://api.whatsapp.com/send?phone=${socials.whatsapp || settings.whatsapp}`} target="_blank" rel="noreferrer" className="block text-muted-foreground hover:text-foreground">WhatsApp inquiries</a>
           <a href={settings.foodpanda_url} target="_blank" rel="noreferrer" className="block text-[var(--gold)] hover:underline">Order on foodpanda →</a>
         </div>
       </div>
