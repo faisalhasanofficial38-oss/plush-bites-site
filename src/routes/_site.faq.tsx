@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { snapshotQuery } from "./_site";
 import { PageHero } from "@/components/site-ui";
 
-const FAQS = [
+const FALLBACK_FAQS = [
   { q: "Do I need to reserve a table?", a: "Walk-ins are welcome, but reservations are strongly recommended for evenings and weekends — especially live music nights." },
   { q: "What are your opening hours?", a: "We're open every day from 11:30 AM to 11:00 PM, with the lounge active until close." },
   { q: "How much should I expect to spend?", a: "Most guests spend around ৳400–600 per person for a full meal. Drinks, signature dishes and platters are priced separately." },
@@ -22,18 +24,13 @@ export const Route = createFileRoute("/_site/faq")({
       { property: "og:description", content: "Everything you need to know before your first visit." },
     ],
     links: [{ rel: "canonical", href: "/faq" }],
-    scripts: [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org", "@type": "FAQPage",
-        mainEntity: FAQS.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-      }),
-    }],
   }),
   component: FaqPage,
 });
 
 function FaqPage() {
+  const { data: { faqs } } = useSuspenseQuery(snapshotQuery);
+  const FAQS = faqs.length > 0 ? faqs.map(f => ({ q: f.question, a: f.answer })) : FALLBACK_FAQS;
   const [open, setOpen] = useState<number | null>(0);
   return (
     <>
