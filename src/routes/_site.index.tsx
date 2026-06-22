@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { snapshotQuery } from "./_site";
 import { SectionHeader } from "@/components/site-ui";
 import heroImg from "@/assets/hero.jpg";
@@ -12,6 +13,7 @@ import menuNachos from "@/assets/menu-nachos.jpg";
 import menuCashew from "@/assets/menu-cashew.jpg";
 
 const FALLBACK = [menuPeri, menuPizza, menuNachos, menuCashew, dish1, dish2, dish3];
+const Hero3D = lazy(() => import("@/components/hero-3d").then(m => ({ default: m.Hero3D })));
 
 export const Route = createFileRoute("/_site/")({
   head: () => ({
@@ -42,6 +44,13 @@ export const Route = createFileRoute("/_site/")({
 
 function Home() {
   const { data: { settings, items } } = useSuspenseQuery(snapshotQuery);
+  const [mount3D, setMount3D] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setTimeout(() => setMount3D(true), 400);
+    return () => clearTimeout(t);
+  }, []);
   const featured = items.slice(0, 6);
   return (
     <>
@@ -51,6 +60,11 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background"></div>
         <div className="absolute inset-0" style={{ background: "var(--gradient-radial-spot)" }}></div>
+        {mount3D && (
+          <div className="absolute inset-0 opacity-70 mix-blend-screen pointer-events-none">
+            <Suspense fallback={null}><Hero3D /></Suspense>
+          </div>
+        )}
 
         <div className="relative mx-auto max-w-7xl w-full px-5 sm:px-8">
           <div className="max-w-3xl animate-fade-up">
