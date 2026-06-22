@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      faqs: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          is_visible: boolean
+          question: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          question: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          question?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery_media: {
+        Row: {
+          alt: string
+          caption: string
+          created_at: string
+          id: string
+          is_visible: boolean
+          kind: string
+          poster_url: string | null
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          alt?: string
+          caption?: string
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          kind: string
+          poster_url?: string | null
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          alt?: string
+          caption?: string
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          kind?: string
+          poster_url?: string | null
+          sort_order?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       menu_categories: {
         Row: {
           created_at: string
@@ -142,6 +211,45 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          is_featured: boolean
+          is_visible: boolean
+          message: string
+          name: string
+          rating: number
+          role_label: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          is_visible?: boolean
+          message: string
+          name: string
+          rating: number
+          role_label?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          is_visible?: boolean
+          message?: string
+          name?: string
+          rating?: number
+          role_label?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           address: string
@@ -184,6 +292,42 @@ export type Database = {
           restaurant_name?: string
           updated_at?: string
           whatsapp?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          email: string
+          facebook: string
+          id: number
+          instagram: string
+          tiktok: string
+          updated_at: string
+          whatsapp: string
+          x_twitter: string
+          youtube: string
+        }
+        Insert: {
+          email?: string
+          facebook?: string
+          id?: number
+          instagram?: string
+          tiktok?: string
+          updated_at?: string
+          whatsapp?: string
+          x_twitter?: string
+          youtube?: string
+        }
+        Update: {
+          email?: string
+          facebook?: string
+          id?: number
+          instagram?: string
+          tiktok?: string
+          updated_at?: string
+          whatsapp?: string
+          x_twitter?: string
+          youtube?: string
         }
         Relationships: []
       }
