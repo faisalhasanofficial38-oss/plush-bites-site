@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { snapshotQuery } from "./_site";
 import { PageHero } from "@/components/site-ui";
 
-const REVIEWS = [
+const FALLBACK_REVIEWS = [
   { n: "Tridib Ghose", r: "Local Guide · 198 reviews", s: 5, q: "Food is generally good. Good ambience. Furniture has been improved recently. Staff are friendly and helpful. Pretty good hygiene standard maintained in the dining area." },
   { n: "Rakin Rafsan", r: "Local Guide · 67 reviews", s: 5, q: "The food quality is very good and all items are found delicious. However the sitting space is a bit small — get there early on weekends." },
   { n: "Mashruba Hani", r: "Local Guide · 60 reviews", s: 4, q: "Environment was cozy and they allow live music for their customers. A very good place to hangout with friends and have some great, tasty food. Chicken cashew nut salad was a favourite." },
@@ -24,7 +26,11 @@ export const Route = createFileRoute("/_site/reviews")({
 });
 
 function ReviewsPage() {
-  const avg = REVIEWS.reduce((a, r) => a + r.s, 0) / REVIEWS.length;
+  const { data: { reviews } } = useSuspenseQuery(snapshotQuery);
+  const REVIEWS = reviews.length > 0
+    ? reviews.map(r => ({ n: r.name, r: r.role_label, s: r.rating, q: r.message }))
+    : FALLBACK_REVIEWS;
+  const avg = REVIEWS.reduce((a, r) => a + r.s, 0) / Math.max(1, REVIEWS.length);
   return (
     <>
       <PageHero eyebrow="Guests" title={<>Loved by the <span className="text-gradient-gold italic">regulars.</span></>} sub="A few words from the people who keep coming back." />
