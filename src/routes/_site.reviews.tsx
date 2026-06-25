@@ -36,32 +36,36 @@ function ReviewsPage() {
       <PageHero eyebrow="Guests" title={<>Loved by the <span className="text-gradient-gold italic">regulars.</span></>} sub="A few words from the people who keep coming back." />
 
       <section className="mx-auto max-w-3xl px-5 sm:px-8">
-        <div className="glass rounded-3xl p-8 text-center">
-          <div className="font-display text-6xl text-gradient-gold">{avg.toFixed(1)}</div>
-          <div className="mt-2 text-[var(--gold)] text-lg">{"★".repeat(Math.round(avg))}{"☆".repeat(5 - Math.round(avg))}</div>
-          <div className="mt-2 text-sm text-muted-foreground">Based on <span className="text-foreground">889 Google reviews</span></div>
+        <div className="glass-strong rounded-3xl p-8 sm:p-10 text-center">
+          <div className="font-display text-6xl sm:text-7xl text-gradient-gold">{avg.toFixed(1)}</div>
+          <div className="mt-3 text-[var(--gold)] text-xl sm:text-2xl tracking-wider">{"★".repeat(Math.round(avg))}{"☆".repeat(5 - Math.round(avg))}</div>
+          <div className="mt-3 text-sm text-muted-foreground">Based on <span className="text-foreground font-medium">889 Google reviews</span></div>
         </div>
       </section>
 
       <section className="mx-auto mt-12 max-w-7xl px-5 sm:px-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3 pb-24">
-        {REVIEWS.map((t) => (
-          <figure key={t.n} className="glass hover-lift rounded-3xl p-8 flex flex-col [perspective:1000px] group">
+        {REVIEWS.map((t, i) => (
+          <figure key={t.n} className="glass rounded-3xl p-8 flex flex-col transition-all duration-500 hover:shadow-[var(--shadow-gold)]"
+            style={{ animation: `fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${0.1 + i * 0.1}s both` }}>
             <div className="text-gradient-gold font-display text-5xl leading-none">"</div>
-            <blockquote className="mt-2 text-foreground/90 leading-relaxed">{t.q}</blockquote>
+            <blockquote className="mt-2 text-foreground/90 leading-relaxed flex-1">{t.q}</blockquote>
             <figcaption className="mt-8 flex items-center gap-3 pt-6 border-t border-border/60">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold-gradient font-display text-primary-foreground shrink-0">{t.n[0]}</div>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold-gradient font-display text-primary-foreground shrink-0 shadow-[var(--shadow-gold)]">{t.n[0]}</div>
               <div className="min-w-0">
                 <div className="text-sm font-medium truncate">{t.n}</div>
                 <div className="text-xs text-muted-foreground truncate">{t.r}</div>
               </div>
-              <div className="ml-auto text-[var(--gold)] text-sm shrink-0">{"★".repeat(t.s)}{"☆".repeat(5 - t.s)}</div>
+              <div className="ml-auto text-[var(--gold)] text-sm shrink-0 tracking-wider">{"★".repeat(t.s)}{"☆".repeat(5 - t.s)}</div>
             </figcaption>
           </figure>
         ))}
       </section>
 
       <section className="mx-auto max-w-3xl px-5 sm:px-8 pb-24 text-center">
-        <Link to="/order" className="inline-flex rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Reserve your table →</Link>
+        <Link to="/order" className="group inline-flex items-center gap-2 rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">
+          Reserve your table
+          <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </Link>
       </section>
     </>
   );

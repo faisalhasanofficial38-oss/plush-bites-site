@@ -40,10 +40,10 @@ function FaqPage() {
         {FAQS.map((f, i) => {
           const isOpen = open === i;
           return (
-            <div key={f.q} className={`glass rounded-2xl overflow-hidden transition-all ${isOpen ? "shadow-[var(--shadow-gold)]" : ""}`}>
-              <button onClick={() => setOpen(isOpen ? null : i)} className="w-full text-left flex items-center justify-between gap-6 px-6 py-5">
+            <div key={f.q} className={`glass rounded-2xl overflow-hidden transition-all duration-500 ${isOpen ? "shadow-[var(--shadow-gold)] border-[var(--gold)]/30" : "hover:shadow-[var(--shadow-soft)]"}`}>
+              <button onClick={() => setOpen(isOpen ? null : i)} className="w-full text-left flex items-center justify-between gap-6 px-6 py-5 transition-colors duration-300 hover:bg-white/[0.02]">
                 <span className="font-display text-lg sm:text-xl">{f.q}</span>
-                <span className={`text-gradient-gold text-2xl transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}>+</span>
+                <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/[0.04] text-gradient-gold text-lg transition-all duration-500 ${isOpen ? "rotate-45 bg-gold-gradient text-primary-foreground" : ""}`}>+</span>
               </button>
               <div className={`grid transition-all duration-500 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                 <div className="overflow-hidden">
@@ -56,10 +56,13 @@ function FaqPage() {
       </section>
 
       <section className="mx-auto max-w-3xl px-5 sm:px-8 pb-24 text-center">
-        <p className="text-muted-foreground mb-5">Still have a question?</p>
+        <p className="text-muted-foreground mb-6">Still have a question?</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/contact" className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)]">Get in touch</Link>
-          <Link to="/order" className="rounded-full glass-soft px-6 py-3 text-sm hover-lift">Reserve a table</Link>
+          <Link to="/contact" className="group rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">
+            Get in touch
+            <span className="inline-block ml-1 transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
+          <Link to="/order" className="rounded-full glass-strong px-6 py-3 text-sm font-medium transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">Reserve a table</Link>
         </div>
       </section>
     </>

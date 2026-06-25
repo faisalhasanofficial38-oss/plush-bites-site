@@ -46,18 +46,18 @@ function MenuPage() {
         sub="A living menu — chef's specials rotate weekly. Tap any plate for details, or order direct on foodpanda." />
 
       <section className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="glass rounded-3xl p-5 sm:p-6 grid gap-4 sm:grid-cols-[1fr_auto] items-center sticky top-24 z-30">
+        <div className="glass-strong rounded-3xl p-5 sm:p-6 grid gap-4 sm:grid-cols-[1fr_auto] items-center sticky top-24 z-30">
           <div className="relative">
             <svg viewBox="0 0 24 24" className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
             <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search dishes…"
-              className="w-full rounded-full bg-input/40 border border-border/60 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[var(--gold)]" />
+              className="w-full rounded-full bg-input/40 border border-border/60 pl-11 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20 transition-all duration-300" />
           </div>
           <a href={settings.foodpanda_url} target="_blank" rel="noreferrer"
-            className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] text-center">Order on foodpanda</a>
+            className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[var(--shadow-glow-gold)]">Order on foodpanda</a>
         </div>
 
         {categories.length > 0 && (
-          <div className="mt-6 flex gap-2 overflow-x-auto pb-2 -mx-2 px-2">
+          <div className="mt-6 flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none">
             <CatChip label="All" active={activeCat === "all"} onClick={() => setActiveCat("all")} />
             {categories.map(c => (
               <CatChip key={c.id} label={c.name} active={activeCat === c.id} onClick={() => setActiveCat(c.id)} />
@@ -72,15 +72,16 @@ function MenuPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((it, i) => (
-              <article key={it.id} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col [perspective:1200px]">
+              <article key={it.id} className="glass hover-lift group rounded-3xl overflow-hidden flex flex-col transition-all duration-500"
+                style={{ animation: `fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${0.05 + i * 0.05}s both` }}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img src={it.image_url || FALLBACK[i % FALLBACK.length]} alt={it.name} loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110 group-hover:[transform:rotateX(2deg)_rotateY(-2deg)]" />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    {it.is_best_seller && <span className="text-[10px] uppercase tracking-[0.25em] rounded-full bg-[var(--ember)]/30 backdrop-blur px-3 py-1 text-[var(--gold)]">Best seller</span>}
-                    {it.is_featured && !it.is_best_seller && <span className="text-[10px] uppercase tracking-[0.25em] glass-soft rounded-full px-3 py-1">Featured</span>}
+                    className="h-full w-full object-cover transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:rotate-[2deg]" />
+                  <div className="absolute top-3 left-3 flex gap-2 z-10">
+                    {it.is_best_seller && <span className="text-[10px] uppercase tracking-[0.25em] rounded-full bg-gradient-to-r from-[var(--ember)]/40 to-[var(--gold)]/20 backdrop-blur px-3 py-1 text-[var(--gold)]">Best seller</span>}
+                    {it.is_featured && !it.is_best_seller && <span className="text-[10px] uppercase tracking-[0.25em] glass-strong rounded-full px-3 py-1">Featured</span>}
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent"></div>
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-start justify-between gap-4">
@@ -95,7 +96,10 @@ function MenuPage() {
         )}
 
         <div className="mt-14 text-center">
-          <Link to="/order" className="inline-flex rounded-full glass px-7 py-3.5 text-sm font-medium hover-lift">Reserve a table to dine in →</Link>
+          <Link to="/order" className="group inline-flex items-center gap-2 rounded-full glass-strong px-7 py-3.5 text-sm font-medium transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">
+            Reserve a table to dine in
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </section>
     </>
@@ -104,6 +108,6 @@ function MenuPage() {
 
 function CatChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`shrink-0 rounded-full px-5 py-2 text-sm transition-all ${active ? "bg-gold-gradient text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{label}</button>
+    <button onClick={onClick} className={`shrink-0 rounded-full px-5 py-2 text-sm transition-all duration-300 ${active ? "bg-gold-gradient text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"}`}>{label}</button>
   );
 }

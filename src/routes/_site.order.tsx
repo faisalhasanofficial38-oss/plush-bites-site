@@ -48,12 +48,12 @@ function OrderPage() {
 function ModeButton({ active, onClick, title, sub, icon }: { active: boolean; onClick: () => void; title: string; sub: string; icon: string }) {
   return (
     <button onClick={onClick}
-      className={`group relative overflow-hidden rounded-3xl p-6 text-left transition-all [perspective:1000px] ${active ? "glass shadow-[var(--shadow-gold)] border border-[var(--gold)]/40" : "glass-soft hover-lift"}`}>
-      <div className="flex items-center gap-4">
-        <span className={`grid h-14 w-14 place-items-center rounded-2xl text-3xl transition-transform group-hover:scale-110 ${active ? "bg-gold-gradient" : "bg-input/40"}`}>{icon}</span>
+      className={`group relative overflow-hidden rounded-3xl p-6 sm:p-8 text-left transition-all duration-500 [perspective:1000px] ${active ? "glass-strong shadow-[var(--shadow-gold)] border border-[var(--gold)]/40" : "glass-soft hover:shadow-[var(--shadow-soft)]"}`}>
+      <div className="flex items-center gap-4 sm:gap-5">
+        <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl text-3xl transition-all duration-500 ${active ? "bg-gold-gradient shadow-[var(--shadow-gold)] scale-110" : "bg-input/40"}`}>{icon}</span>
         <div>
-          <div className="font-display text-xl">{title}</div>
-          <div className="text-xs text-muted-foreground mt-1">{sub}</div>
+          <div className="font-display text-xl sm:text-2xl">{title}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground mt-1">{sub}</div>
         </div>
       </div>
     </button>
@@ -62,16 +62,24 @@ function ModeButton({ active, onClick, title, sub, icon }: { active: boolean; on
 
 function DeliveryPanel({ settings }: { settings: { foodpanda_url: string; phone: string } }) {
   return (
-    <div className="glass rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+    <div className="glass-strong rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[var(--ember)] opacity-10 blur-3xl"></div>
+      <div className="absolute inset-0 bg-noise opacity-[0.06] pointer-events-none"></div>
       <div className="relative">
-        <div className="text-[10px] uppercase tracking-[0.4em] text-gradient-gold">Delivery partner</div>
-        <h2 className="mt-4 font-display text-3xl sm:text-4xl">Order on <span className="text-[#d70f64]">foodpanda</span></h2>
-        <p className="mt-4 text-muted-foreground max-w-md mx-auto">The full HashTag kitchen, delivered fresh. Same plates as dine-in — pay online or cash on delivery.</p>
+        <div className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-gradient-gold">
+          <span className="h-px w-6 bg-gradient-to-r from-transparent to-[var(--gold)]"></span>
+          <span>Delivery partner</span>
+          <span className="h-px w-6 bg-gradient-to-l from-transparent to-[var(--gold)]"></span>
+        </div>
+        <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl">Order on <span className="text-[#d70f64]">foodpanda</span></h2>
+        <p className="mt-4 text-muted-foreground max-w-md mx-auto leading-relaxed">The full HashTag kitchen, delivered fresh. Same plates as dine-in — pay online or cash on delivery.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a href={settings.foodpanda_url} target="_blank" rel="noreferrer"
-            className="rounded-full bg-gold-gradient px-8 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.03]">Open foodpanda →</a>
-          <a href={`tel:${settings.phone}`} className="rounded-full glass-soft px-8 py-4 text-sm font-medium hover-lift">Call to order</a>
+            className="group rounded-full bg-gold-gradient px-8 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[var(--shadow-glow-gold)]">
+            Open foodpanda
+            <span className="inline-block ml-1 transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
+          <a href={`tel:${settings.phone}`} className="rounded-full glass-strong px-8 py-4 text-sm font-medium transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">Call to order</a>
         </div>
         <p className="mt-6 text-xs text-muted-foreground">Foodpanda handles delivery, payment and tracking.</p>
       </div>
@@ -121,17 +129,17 @@ function ReservationForm({ items }: { items: string[] }) {
 
   if (mutation.isSuccess) {
     return (
-      <div className="glass rounded-3xl p-10 text-center">
-        <div className="text-5xl mb-4">✨</div>
-        <h2 className="font-display text-3xl">Reservation received</h2>
-        <p className="mt-3 text-muted-foreground">We'll confirm by phone shortly. For urgent changes, call 01869-341634.</p>
-        <button onClick={() => mutation.reset()} className="mt-6 rounded-full glass-soft px-6 py-2.5 text-sm hover-lift">Make another reservation</button>
+      <div className="glass-strong rounded-3xl p-10 sm:p-14 text-center animate-scale-in">
+        <div className="text-6xl mb-6">✨</div>
+        <h2 className="font-display text-3xl sm:text-4xl">Reservation received</h2>
+        <p className="mt-4 text-muted-foreground max-w-md mx-auto leading-relaxed">We'll confirm by phone shortly. For urgent changes, call 01869-341634.</p>
+        <button onClick={() => mutation.reset()} className="mt-8 rounded-full glass-strong px-6 py-2.5 text-sm font-medium transition-all duration-300 hover:shadow-[var(--shadow-glow-gold)]">Make another reservation</button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="glass rounded-3xl p-6 sm:p-10 grid gap-5">
+    <form onSubmit={onSubmit} className="glass-strong rounded-3xl p-6 sm:p-10 grid gap-6">
       <h2 className="font-display text-2xl">Reserve a table</h2>
       <div className="grid sm:grid-cols-2 gap-5">
         <FormField name="name" label="Full name" placeholder="Your name" required maxLength={120} />
@@ -147,12 +155,12 @@ function ReservationForm({ items }: { items: string[] }) {
       {items.length > 0 && (
         <div>
           <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-3">Select foods (optional)</span>
-          <div className="flex flex-wrap gap-2 max-h-44 overflow-y-auto p-2 rounded-xl bg-input/20 border border-border/60">
+          <div className="flex flex-wrap gap-2 max-h-44 overflow-y-auto p-3 rounded-xl bg-input/20 border border-border/60">
             {items.map(name => {
               const active = selected.includes(name);
               return (
                 <button type="button" key={name} onClick={() => toggleItem(name)}
-                  className={`rounded-full px-3 py-1.5 text-xs transition-all ${active ? "bg-gold-gradient text-primary-foreground" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{name}</button>
+                  className={`rounded-full px-3 py-1.5 text-xs transition-all duration-300 ${active ? "bg-gold-gradient text-primary-foreground shadow-[var(--shadow-gold)]" : "glass-soft text-muted-foreground hover:text-foreground"}`}>{name}</button>
               );
             })}
           </div>
@@ -162,9 +170,9 @@ function ReservationForm({ items }: { items: string[] }) {
 
       <FormField name="special_request" label="Special request (optional)" placeholder="Allergies, occasion, seating preference…" textarea maxLength={1000} />
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-sm text-destructive bg-destructive/10 rounded-xl px-4 py-3">{error}</p>}
       <button type="submit" disabled={mutation.isPending}
-        className="mt-2 rounded-full bg-gold-gradient px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100">
+        className="mt-2 rounded-full bg-gold-gradient px-7 py-4 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-gold)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[var(--shadow-glow-gold)] disabled:opacity-60 disabled:hover:scale-100 active:scale-[0.98]">
         {mutation.isPending ? "Submitting…" : "Request reservation"}
       </button>
       <p className="text-xs text-muted-foreground text-center">We'll confirm by phone. Live music nights fill up fast.</p>
@@ -176,12 +184,12 @@ function FormField({ name, label, placeholder, type = "text", required, textarea
   name: string; label: string; placeholder?: string; type?: string; required?: boolean; textarea?: boolean;
   defaultValue?: string; min?: number | string; max?: number | string; maxLength?: number;
 }) {
-  const base = "w-full rounded-xl bg-input/40 border border-border/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20 transition-colors";
+  const base = "w-full rounded-xl bg-input/40 border border-border/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20 transition-all duration-300";
   return (
     <label className="block">
       <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">{label}</span>
       {textarea ? (
-        <textarea name={name} placeholder={placeholder} required={required} rows={3} maxLength={maxLength} className={base} />
+        <textarea name={name} placeholder={placeholder} required={required} rows={3} maxLength={maxLength} className={`${base} resize-none`} />
       ) : (
         <input name={name} placeholder={placeholder} required={required} type={type} defaultValue={defaultValue} min={min} max={max} maxLength={maxLength} className={base} />
       )}

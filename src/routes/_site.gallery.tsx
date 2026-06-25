@@ -54,14 +54,20 @@ function GalleryPage() {
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 [column-fill:_balance]">
           {SHOTS.map((s, i) => (
             <button key={i} onClick={() => setOpen(i)}
-              className="group mb-5 block w-full overflow-hidden rounded-3xl border border-border/60 hover-lift break-inside-avoid text-left">
+              className="group mb-5 block w-full overflow-hidden rounded-2xl border border-border/60 transition-all duration-500 hover:shadow-[var(--shadow-gold)] hover:border-[var(--gold)]/40 break-inside-avoid text-left"
+              style={{ animation: `fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${0.05 + i * 0.05}s both` }}>
               {s.kind === "video" ? (
                 <video src={s.src} poster={s.poster ?? undefined} muted loop playsInline
                   onMouseEnter={(e) => e.currentTarget.play()} onMouseLeave={(e) => e.currentTarget.pause()}
-                  className="h-full w-full object-cover" />
+                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105" />
               ) : (
                 <img src={s.src} alt={s.alt} loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110" />
+                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105" />
+              )}
+              {s.caption && (
+                <div className="p-3 text-left">
+                  <p className="text-xs text-muted-foreground">{s.caption}</p>
+                </div>
               )}
             </button>
           ))}
@@ -69,13 +75,22 @@ function GalleryPage() {
       </section>
 
       {open !== null && (
-        <div onClick={() => setOpen(null)} className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-up">
-          <button aria-label="Close" onClick={() => setOpen(null)} className="absolute top-6 right-6 grid h-11 w-11 place-items-center rounded-full glass">✕</button>
-          <button aria-label="Previous" onClick={(e) => { e.stopPropagation(); setOpen((open - 1 + SHOTS.length) % SHOTS.length); }} className="absolute left-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass">‹</button>
-          {SHOTS[open].kind === "video"
-            ? <video src={SHOTS[open].src} poster={SHOTS[open].poster ?? undefined} controls autoPlay className="max-h-[90vh] max-w-[90vw] rounded-2xl" onClick={e => e.stopPropagation()} />
-            : <img src={SHOTS[open].src} alt={SHOTS[open].alt} className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain" onClick={e => e.stopPropagation()} />}
-          <button aria-label="Next" onClick={(e) => { e.stopPropagation(); setOpen((open + 1) % SHOTS.length); }} className="absolute right-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass">›</button>
+        <div onClick={() => setOpen(null)} className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-2xl flex items-center justify-center p-4 animate-fade-in">
+          <button aria-label="Close" onClick={() => setOpen(null)} className="absolute top-6 right-6 grid h-12 w-12 place-items-center rounded-full glass-strong text-lg transition-all duration-300 hover:scale-110 hover:shadow-[var(--shadow-glow-gold)] z-10">✕</button>
+          <button aria-label="Previous" onClick={(e) => { e.stopPropagation(); setOpen((open - 1 + SHOTS.length) % SHOTS.length); }} className="absolute left-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass-strong text-xl transition-all duration-300 hover:scale-110 hover:shadow-[var(--shadow-glow-gold)] z-10">‹</button>
+          <div className="relative max-h-[90vh] max-w-[90vw] animate-scale-in" onClick={e => e.stopPropagation()}>
+            {SHOTS[open].kind === "video" ? (
+              <video src={SHOTS[open].src} poster={SHOTS[open].poster ?? undefined} controls autoPlay className="max-h-[85vh] max-w-[85vw] rounded-2xl" />
+            ) : (
+              <>
+                <img src={SHOTS[open].src} alt={SHOTS[open].alt} className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain" />
+                {SHOTS[open].caption && (
+                  <p className="mt-3 text-sm text-muted-foreground text-center">{SHOTS[open].caption}</p>
+                )}
+              </>
+            )}
+          </div>
+          <button aria-label="Next" onClick={(e) => { e.stopPropagation(); setOpen((open + 1) % SHOTS.length); }} className="absolute right-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full glass-strong text-xl transition-all duration-300 hover:scale-110 hover:shadow-[var(--shadow-glow-gold)] z-10">›</button>
         </div>
       )}
     </>
