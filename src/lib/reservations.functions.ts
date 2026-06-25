@@ -32,7 +32,7 @@ const ReservationInput = z.object({
 });
 
 export const createReservation = createServerFn({ method: "POST" })
-  .inputValidator((input) => ReservationInput.parse(input))
+  .validator((input) => ReservationInput.parse(input))
   .handler(async ({ data }) => {
     const sb = createClient<Database>(
       process.env.SUPABASE_URL!,
@@ -79,7 +79,7 @@ const StatusInput = z.object({
 
 export const updateReservationStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => StatusInput.parse(input))
+  .validator((input) => StatusInput.parse(input))
   .handler(async ({ data, context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", {
       _user_id: context.userId, _role: "admin",
@@ -93,7 +93,7 @@ export const updateReservationStatus = createServerFn({ method: "POST" })
 
 export const deleteReservation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .validator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", {
       _user_id: context.userId, _role: "admin",

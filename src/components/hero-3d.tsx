@@ -1,10 +1,10 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sphere, MeshDistortMaterial } from "@react-three/drei";
 import { Suspense, useMemo, useRef } from "react";
-import * as THREE from "three";
+import type { Points } from "three";
 
 function Particles({ count = 120 }: { count?: number }) {
-  const ref = useRef<THREE.Points>(null);
+  const ref = useRef<Points>(null);
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {

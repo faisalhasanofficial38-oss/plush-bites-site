@@ -69,7 +69,7 @@ function ContactPage() {
           <div className="min-h-[280px] relative flex-1">
             <iframe
               title="HashTag Restaurant location" src={settings.map_embed_url}
-              sandbox="allow-scripts allow-same-origin allow-popups"
+              sandbox="allow-scripts allow-popups"
               referrerPolicy="no-referrer-when-downgrade"
               className="absolute inset-0 h-full w-full" style={{ border: 0, filter: "invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.9)" }}
               loading="lazy" />
